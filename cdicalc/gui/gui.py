@@ -5,7 +5,7 @@
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
 from functools import partial
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QLineEdit, QMainWindow
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
 
@@ -31,9 +31,11 @@ class ApplicationWindow(QMainWindow):
             partial(self.model.wavelength_changed, self.ui)
         )
 
-        self.ui.energy.editingFinished.connect(
-            partial(self.model.format_field, self.ui.energy)
-        )
-        self.ui.wavelength.editingFinished.connect(
-            partial(self.model.format_field, self.ui.wavelength)
-        )
+        ui_attr = dir(self.ui)
+        print(ui_attr)
+        for idx, attr in enumerate(ui_attr):
+            if isinstance(getattr(self.ui, attr), QLineEdit):
+                field = getattr(self.ui, attr)
+                field.editingFinished.connect(
+                    partial(self.model.format_field, field)
+                )
