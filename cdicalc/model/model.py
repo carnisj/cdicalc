@@ -13,10 +13,16 @@ from typing import Optional
 
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
+default_units = {
+    "energy": "keV",
+    "wavelength": "angstrom",
+    "distance": "m",
+    "unknown": "",
+}
+
 EMPTY_MSG = ""
 ERROR_MSG = "ERROR"
-XRAY_UNIT = "keV"
-WAVELENGTH_UNIT = "angstrom"
+
 units = UnitRegistry()
 
 
@@ -46,8 +52,10 @@ def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Qu
 
 
 class Model:
-
-    def __init__(self, config, ):
+    def __init__(
+        self,
+        config,
+    ):
         self._config = config
 
     @staticmethod
@@ -55,13 +63,15 @@ class Model:
         input_text = ui.energy.text()
         try:
             _energy: Optional[Quantity] = units.Quantity(input_text)
-            _energy = convert_unit(quantity=_energy, default_unit=XRAY_UNIT)
+            _energy = convert_unit(
+                quantity=_energy, default_unit=default_units["energy"]
+            )
             if _energy is None:
                 ui.wavelength.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray energy should be in keV")
             else:
                 ui.wavelength.setText(
-                    f"{units.Quantity(12.398/_energy.m, WAVELENGTH_UNIT):~.2f}"
+                    f"{units.Quantity(12.398/_energy.m, default_units['wavelength']):~.2f}"
                 )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
@@ -74,14 +84,14 @@ class Model:
         try:
             _wavelength: Optional[Quantity] = units.Quantity(input_text)
             _wavelength = convert_unit(
-                quantity=_wavelength, default_unit=WAVELENGTH_UNIT
+                quantity=_wavelength, default_unit=default_units["wavelength"]
             )
             if _wavelength is None:
                 ui.energy.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray wavelength should be in angstrom")
             else:
                 ui.energy.setText(
-                    f"{units.Quantity(12.398/_wavelength.m, XRAY_UNIT):~.2f}"
+                    f"{units.Quantity(12.398/_wavelength.m, default_units['energy']):~.2f}"
                 )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
@@ -91,11 +101,29 @@ class Model:
             ui.energy.setText(ERROR_MSG)
 
     @staticmethod
+    def distance_changed(ui: Ui_MainWindow):
+        input_text = ui.distance.text()
+        try:
+            _distance: Optional[Quantity] = units.Quantity(input_text)
+            _distance = convert_unit(
+                quantity=_distance, default_unit=default_units["distance"]
+            )
+            if _distance is None:
+                ui.helptext.setText("The detector distance should be in m")
+            else:
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText("The detector distance should be a string: e.g. '1 m'")
+
+    @staticmethod
     def format_field(field: QLineEdit) -> None:
         input_text = field.text()
         try:
             _quantity: Optional[Quantity] = units.Quantity(input_text)
-            _quantity = convert_unit(quantity=_quantity, default_unit=XRAY_UNIT)
+            _quantity = convert_unit(
+                quantity=_quantity,
+                default_unit=default_units.get(field.objectName(), "unknown"),
+            )
             if _quantity is not None:
                 field.setText(f"{_quantity:~.2f}")
         except (AttributeError, ValueError, UndefinedUnitError):

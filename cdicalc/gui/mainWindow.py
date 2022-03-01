@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 30, 801, 551))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 40, 801, 541))
         self.tabWidget.setObjectName("tabWidget")
         self.bcdi = QtWidgets.QWidget()
         self.bcdi.setObjectName("bcdi")
@@ -27,14 +27,20 @@ class Ui_MainWindow(object):
         self.energy.setText("")
         self.energy.setObjectName("energy")
         self.label_energy = QtWidgets.QLabel(self.bcdi)
-        self.label_energy.setGeometry(QtCore.QRect(50, 10, 71, 20))
+        self.label_energy.setGeometry(QtCore.QRect(40, 10, 71, 20))
         self.label_energy.setObjectName("label_energy")
         self.wavelength = QtWidgets.QLineEdit(self.bcdi)
         self.wavelength.setGeometry(QtCore.QRect(180, 30, 113, 20))
         self.wavelength.setObjectName("wavelength")
         self.label_wavelength = QtWidgets.QLabel(self.bcdi)
-        self.label_wavelength.setGeometry(QtCore.QRect(210, 10, 71, 16))
+        self.label_wavelength.setGeometry(QtCore.QRect(200, 10, 81, 20))
         self.label_wavelength.setObjectName("label_wavelength")
+        self.distance = QtWidgets.QLineEdit(self.bcdi)
+        self.distance.setGeometry(QtCore.QRect(340, 30, 113, 20))
+        self.distance.setObjectName("distance")
+        self.label = QtWidgets.QLabel(self.bcdi)
+        self.label.setGeometry(QtCore.QRect(350, 9, 111, 21))
+        self.label.setObjectName("label")
         self.tabWidget.addTab(self.bcdi, "")
         self.diffraction = QtWidgets.QWidget()
         self.diffraction.setObjectName("diffraction")
@@ -44,7 +50,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.cdi, "")
         self.helptext = QtWidgets.QLineEdit(self.centralwidget)
         self.helptext.setEnabled(True)
-        self.helptext.setGeometry(QtCore.QRect(10, 0, 781, 21))
+        self.helptext.setGeometry(QtCore.QRect(10, 10, 781, 21))
         self.helptext.setReadOnly(True)
         self.helptext.setObjectName("helptext")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -65,6 +71,16 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_energy.setText(_translate("MainWindow", "X-ray energy (keV)"))
         self.label_wavelength.setText(_translate("MainWindow", "Wavelength (A)"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.bcdi), _translate("MainWindow", "BCDI calculations"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.diffraction), _translate("MainWindow", "Diffraction calculations"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.cdi), _translate("MainWindow", "CDI calculations"))
+        self.label.setText(_translate("MainWindow", "Detector distance (m)"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.bcdi),
+            _translate("MainWindow", "BCDI calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.diffraction),
+            _translate("MainWindow", "Diffraction calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.cdi),
+            _translate("MainWindow", "CDI calculations"),
+        )

@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>30</y>
+      <y>40</y>
       <width>801</width>
-      <height>551</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -46,7 +46,7 @@
      <widget class="QLabel" name="label_energy">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>40</x>
         <y>10</y>
         <width>71</width>
         <height>20</height>
@@ -69,14 +69,37 @@
      <widget class="QLabel" name="label_wavelength">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>200</x>
         <y>10</y>
-        <width>71</width>
-        <height>16</height>
+        <width>81</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
        <string>Wavelength (A)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="distance">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>30</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>9</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Detector distance (m)</string>
       </property>
      </widget>
     </widget>
@@ -98,7 +121,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>781</width>
       <height>21</height>
      </rect>

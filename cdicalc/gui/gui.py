@@ -24,11 +24,12 @@ class ApplicationWindow(QMainWindow):
         self._connectSignals()
 
     def _connectSignals(self):
-        self.ui.energy.textEdited.connect(
-            partial(self.model.energy_changed, self.ui)
-        )
+        self.ui.energy.textEdited.connect(partial(self.model.energy_changed, self.ui))
         self.ui.wavelength.textEdited.connect(
             partial(self.model.wavelength_changed, self.ui)
+        )
+        self.ui.distance.textEdited.connect(
+            partial(self.model.distance_changed, self.ui)
         )
 
         ui_attr = dir(self.ui)
@@ -36,6 +37,4 @@ class ApplicationWindow(QMainWindow):
         for idx, attr in enumerate(ui_attr):
             if isinstance(getattr(self.ui, attr), QLineEdit):
                 field = getattr(self.ui, attr)
-                field.editingFinished.connect(
-                    partial(self.model.format_field, field)
-                )
+                field.editingFinished.connect(partial(self.model.format_field, field))
