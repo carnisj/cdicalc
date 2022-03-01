@@ -14,11 +14,11 @@ from typing import Optional
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
 default_units = {
-    "distance": "m",
-    "energy": "keV",
-    "pixelsize": "um",
-    "wavelength": "angstrom",
-    "unknown": "",
+    "distance": ("m", "~.2f"),
+    "energy": ("keV", "~.2f"),
+    "pixelsize": ("um", "~.0f"),
+    "wavelength": ("angstrom", "~.4f"),
+    "unknown": ("", "~.2f"),
 }
 
 EMPTY_MSG = ""
@@ -65,14 +65,19 @@ class Model:
         try:
             _energy: Optional[Quantity] = units.Quantity(input_text)
             _energy = convert_unit(
-                quantity=_energy, default_unit=default_units["energy"]
+                quantity=_energy, default_unit=default_units["energy"][0]
             )
             if _energy is None:
                 ui.wavelength.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray energy should be in keV")
             else:
                 ui.wavelength.setText(
-                    f"{units.Quantity(12.398/_energy.m, default_units['wavelength']):~.2f}"
+                    "{number:{precision}}".format(
+                        number=units.Quantity(
+                            12.398 / _energy.m, default_units["wavelength"][0]
+                        ),
+                        precision=default_units["wavelength"][1],
+                    )
                 )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
@@ -85,14 +90,19 @@ class Model:
         try:
             _wavelength: Optional[Quantity] = units.Quantity(input_text)
             _wavelength = convert_unit(
-                quantity=_wavelength, default_unit=default_units["wavelength"]
+                quantity=_wavelength, default_unit=default_units["wavelength"][0]
             )
             if _wavelength is None:
                 ui.energy.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray wavelength should be in angstrom")
             else:
                 ui.energy.setText(
-                    f"{units.Quantity(12.398/_wavelength.m, default_units['energy']):~.2f}"
+                    "{number:{precision}}".format(
+                        number=units.Quantity(
+                            12.398 / _wavelength.m, default_units["energy"][0]
+                        ),
+                        precision=default_units["energy"][1],
+                    )
                 )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
@@ -107,7 +117,7 @@ class Model:
         try:
             _distance: Optional[Quantity] = units.Quantity(input_text)
             _distance = convert_unit(
-                quantity=_distance, default_unit=default_units["distance"]
+                quantity=_distance, default_unit=default_units["distance"][0]
             )
             if _distance is None:
                 ui.helptext.setText("The detector distance should be in m")
@@ -122,7 +132,7 @@ class Model:
         try:
             _pixelsize: Optional[Quantity] = units.Quantity(input_text)
             _pixelsize = convert_unit(
-                quantity=_pixelsize, default_unit=default_units["pixelsize"]
+                quantity=_pixelsize, default_unit=default_units["pixelsize"][0]
             )
             if _pixelsize is None:
                 ui.helptext.setText("The detector pixel size should be in um")
@@ -140,9 +150,14 @@ class Model:
             _quantity: Optional[Quantity] = units.Quantity(input_text)
             _quantity = convert_unit(
                 quantity=_quantity,
-                default_unit=default_units.get(field.objectName(), "unknown"),
+                default_unit=default_units.get(field.objectName(), "unknown")[0],
             )
             if _quantity is not None:
-                field.setText(f"{_quantity:~.2f}")
+                field.setText(
+                    "{number:{precision}}".format(
+                        number=_quantity,
+                        precision=default_units.get(field.objectName(), "unknown")[1],
+                    )
+                )
         except (AttributeError, ValueError, UndefinedUnitError):
             field.setText(ERROR_MSG)
