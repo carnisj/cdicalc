@@ -24,7 +24,9 @@ default_units = {
 EMPTY_MSG = ""
 ERROR_MSG = "ERROR"
 
-units = UnitRegistry()
+units = UnitRegistry(system="mks")
+planck_constant = units.Quantity(1, units.h).to_base_units()
+speed_of_light = units.Quantity(1, units.speed_of_light).to_base_units()
 
 
 def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Quantity]:
@@ -43,7 +45,7 @@ def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Qu
     if not isinstance(default_unit, str):
         raise TypeError(f"default_unit should be a str, got {type(default_unit)}")
     if quantity.units == units.Unit("dimensionless"):
-        return Quantity(quantity.m, default_unit)
+        return units.Quantity(quantity.m, default_unit)
 
     try:
         quantity = quantity.to(default_unit)
@@ -71,11 +73,13 @@ class Model:
                 ui.wavelength.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray energy should be in keV")
             else:
+                new_wavelength = (
+                        planck_constant * speed_of_light / _energy
+                ).to_base_units()
                 ui.wavelength.setText(
                     "{number:{precision}}".format(
-                        number=units.Quantity(
-                            12.398 / _energy.m, default_units["wavelength"][0]
-                        ),
+                        number=new_wavelength.to(default_units["wavelength"][0]
+                                                 ),
                         precision=default_units["wavelength"][1],
                     )
                 )
@@ -96,11 +100,13 @@ class Model:
                 ui.energy.setText(ERROR_MSG)
                 ui.helptext.setText("The X-ray wavelength should be in angstrom")
             else:
+                new_energy = (
+                            planck_constant * speed_of_light / _wavelength
+                ).to_base_units()
                 ui.energy.setText(
                     "{number:{precision}}".format(
-                        number=units.Quantity(
-                            12.398 / _wavelength.m, default_units["energy"][0]
-                        ),
+                        number=new_energy.to(default_units["energy"][0]
+                                             ),
                         precision=default_units["energy"][1],
                     )
                 )
