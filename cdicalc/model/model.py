@@ -14,11 +14,14 @@ from typing import Optional
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
 default_units = {
-    "distance": ("m", "~.2f"),
-    "energy": ("keV", "~.2f"),
-    "pixelsize": ("um", "~.0f"),
-    "wavelength": ("angstrom", "~.4f"),
+    "crystal_size": ("nm", "~.0f"),
+    "detector_distance": ("m", "~.2f"),
+    "detector_pixelsize": ("um", "~.0f"),
+    "fringe_spacing": ("", "~.1f"),
+    "sampling_ratio": ("", "~.1f"),
     "unknown": ("", "~.2f"),
+    "xray_energy": ("keV", "~.2f"),
+    "xray_wavelength": ("angstrom", "~.4f"),
 }
 
 EMPTY_MSG = ""
@@ -62,68 +65,27 @@ class Model:
         self._config = config
 
     @staticmethod
-    def energy_changed(ui: Ui_MainWindow):
-        input_text = ui.energy.text()
+    def crystal_size_changed(ui: Ui_MainWindow):
+        input_text = ui.detector_distance.text()
         try:
-            _energy: Optional[Quantity] = units.Quantity(input_text)
-            _energy = convert_unit(
-                quantity=_energy, default_unit=default_units["energy"][0]
+            _crystal_size: Optional[Quantity] = units.Quantity(input_text)
+            _crystal_size = convert_unit(
+                quantity=_crystal_size, default_unit=default_units["crystal_size"][0]
             )
-            if _energy is None:
-                ui.wavelength.setText(ERROR_MSG)
-                ui.helptext.setText("The X-ray energy should be in keV")
+            if _crystal_size is None:
+                ui.helptext.setText("The crystal size should be in nm")
             else:
-                new_wavelength = (
-                        planck_constant * speed_of_light / _energy
-                ).to_base_units()
-                ui.wavelength.setText(
-                    "{number:{precision}}".format(
-                        number=new_wavelength.to(default_units["wavelength"][0]
-                                                 ),
-                        precision=default_units["wavelength"][1],
-                    )
-                )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText("The X-ray energy should be a string: e.g. '10 keV'")
-            ui.wavelength.setText(ERROR_MSG)
+            ui.helptext.setText("The crystal size should be a string: e.g. '250 nm'")
 
     @staticmethod
-    def wavelength_changed(ui: Ui_MainWindow):
-        input_text = ui.wavelength.text()
-        try:
-            _wavelength: Optional[Quantity] = units.Quantity(input_text)
-            _wavelength = convert_unit(
-                quantity=_wavelength, default_unit=default_units["wavelength"][0]
-            )
-            if _wavelength is None:
-                ui.energy.setText(ERROR_MSG)
-                ui.helptext.setText("The X-ray wavelength should be in angstrom")
-            else:
-                new_energy = (
-                            planck_constant * speed_of_light / _wavelength
-                ).to_base_units()
-                ui.energy.setText(
-                    "{number:{precision}}".format(
-                        number=new_energy.to(default_units["energy"][0]
-                                             ),
-                        precision=default_units["energy"][1],
-                    )
-                )
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText(
-                "The X-ray wavelength should be a string: e.g. '1.5 angstrom'"
-            )
-            ui.energy.setText(ERROR_MSG)
-
-    @staticmethod
-    def distance_changed(ui: Ui_MainWindow):
-        input_text = ui.distance.text()
+    def detector_distance_changed(ui: Ui_MainWindow):
+        input_text = ui.detector_distance.text()
         try:
             _distance: Optional[Quantity] = units.Quantity(input_text)
             _distance = convert_unit(
-                quantity=_distance, default_unit=default_units["distance"][0]
+                quantity=_distance, default_unit=default_units["detector_distance"][0]
             )
             if _distance is None:
                 ui.helptext.setText("The detector distance should be in m")
@@ -133,12 +95,14 @@ class Model:
             ui.helptext.setText("The detector distance should be a string: e.g. '1 m'")
 
     @staticmethod
-    def pixelsize_changed(ui: Ui_MainWindow):
-        input_text = ui.pixelsize.text()
+    def detector_pixelsize_changed(ui: Ui_MainWindow):
+        # FIXME: this is a placeholder
+        input_text = ui.detector_pixelsize.text()
         try:
             _pixelsize: Optional[Quantity] = units.Quantity(input_text)
             _pixelsize = convert_unit(
-                quantity=_pixelsize, default_unit=default_units["pixelsize"][0]
+                quantity=_pixelsize,
+                default_unit=default_units["detector_pixelsize"][0]
             )
             if _pixelsize is None:
                 ui.helptext.setText("The detector pixel size should be in um")
@@ -167,3 +131,97 @@ class Model:
                 )
         except (AttributeError, ValueError, UndefinedUnitError):
             field.setText(ERROR_MSG)
+
+    @staticmethod
+    def fringe_spacing_changed(ui: Ui_MainWindow):
+        # FIXME: this is a placeholder
+        input_text = ui.fringe_spacing.text()
+        try:
+            _fringe_spacing: Optional[Quantity] = units.Quantity(input_text)
+            _fringe_spacing = convert_unit(
+                quantity=_fringe_spacing,
+                default_unit=default_units["fringe_spacing"][0]
+            )
+            if _fringe_spacing is None:
+                ui.helptext.setText("The fringe spacing should be a number")
+            else:
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText(
+                "The fringe spacing should be a unit-less string: e.g. '3'"
+            )
+
+    @staticmethod
+    def sampling_ratio_changed(ui: Ui_MainWindow):
+        # FIXME: this is a placeholder
+        input_text = ui.sampling_ratio.text()
+        try:
+            _sampling_ratio: Optional[Quantity] = units.Quantity(input_text)
+            _sampling_ratio = convert_unit(
+                quantity=_sampling_ratio,
+                default_unit=default_units["sampling_ratio"][0]
+            )
+            if _sampling_ratio is None:
+                ui.helptext.setText("The sampling ratio should be a number")
+            else:
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText(
+                "The sampling ratio should be a unit-less string: e.g. '3'"
+            )
+
+    @staticmethod
+    def xray_energy_changed(ui: Ui_MainWindow):
+        input_text = ui.xray_energy.text()
+        try:
+            _energy: Optional[Quantity] = units.Quantity(input_text)
+            _energy = convert_unit(
+                quantity=_energy, default_unit=default_units["xray_energy"][0]
+            )
+            if _energy is None:
+                ui.xray_wavelength.setText(ERROR_MSG)
+                ui.helptext.setText("The X-ray energy should be in keV")
+            else:
+                new_wavelength = (
+                        planck_constant * speed_of_light / _energy
+                ).to_base_units()
+                ui.xray_wavelength.setText(
+                    "{number:{precision}}".format(
+                        number=new_wavelength.to(default_units["xray_wavelength"][0]
+                                                 ),
+                        precision=default_units["xray_wavelength"][1],
+                    )
+                )
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText("The X-ray energy should be a string: e.g. '10 keV'")
+            ui.xray_wavelength.setText(ERROR_MSG)
+
+    @staticmethod
+    def xray_wavelength_changed(ui: Ui_MainWindow):
+        input_text = ui.xray_wavelength.text()
+        try:
+            _wavelength: Optional[Quantity] = units.Quantity(input_text)
+            _wavelength = convert_unit(
+                quantity=_wavelength, default_unit=default_units["xray_wavelength"][0]
+            )
+            if _wavelength is None:
+                ui.xray_energy.setText(ERROR_MSG)
+                ui.helptext.setText("The X-ray wavelength should be in angstrom")
+            else:
+                new_energy = (
+                        planck_constant * speed_of_light / _wavelength
+                ).to_base_units()
+                ui.xray_energy.setText(
+                    "{number:{precision}}".format(
+                        number=new_energy.to(default_units["xray_energy"][0]
+                                             ),
+                        precision=default_units["xray_energy"][1],
+                    )
+                )
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText(
+                "The X-ray wavelength should be a string: e.g. '1.5 angstrom'"
+            )
+            ui.xray_energy.setText(ERROR_MSG)

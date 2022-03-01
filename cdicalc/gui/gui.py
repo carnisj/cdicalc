@@ -24,16 +24,30 @@ class ApplicationWindow(QMainWindow):
         self._connectSignals()
 
     def _connectSignals(self):
-        self.ui.energy.textEdited.connect(partial(self.model.energy_changed, self.ui))
-        self.ui.wavelength.textEdited.connect(
-            partial(self.model.wavelength_changed, self.ui)
+
+        self.ui.crystal_size.textEdited.connect(
+            partial(self.model.crystal_size_changed, self.ui)
         )
-        self.ui.distance.textEdited.connect(
-            partial(self.model.distance_changed, self.ui)
+        self.ui.detector_distance.textEdited.connect(
+            partial(self.model.detector_distance_changed, self.ui)
+        )
+        self.ui.detector_pixelsize.textEdited.connect(
+            partial(self.model.detector_pixelsize_changed, self.ui)
+        )
+        self.ui.fringe_spacing.textEdited.connect(
+            partial(self.model.fringe_spacing_changed, self.ui)
+        )
+        self.ui.sampling_ratio.textEdited.connect(
+            partial(self.model.sampling_ratio_changed, self.ui)
+        )
+        self.ui.xray_energy.textEdited.connect(
+            partial(self.model.xray_energy_changed, self.ui)
+        )
+        self.ui.xray_wavelength.textEdited.connect(
+            partial(self.model.xray_wavelength_changed, self.ui)
         )
 
         ui_attr = dir(self.ui)
-        print(ui_attr)
         for idx, attr in enumerate(ui_attr):
             if isinstance(getattr(self.ui, attr), QLineEdit):
                 field = getattr(self.ui, attr)
