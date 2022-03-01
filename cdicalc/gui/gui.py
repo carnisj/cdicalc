@@ -41,10 +41,22 @@ class ApplicationWindow(QMainWindow):
             partial(self.model.sampling_ratio_changed, self.ui)
         )
         self.ui.xray_energy.textEdited.connect(
-            partial(self.model.xray_energy_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "xray_energy",
+                ["xray_wavelength"],
+                self.ui,
+                [self.model.update_xrays],
+            )
         )
         self.ui.xray_wavelength.textEdited.connect(
-            partial(self.model.xray_wavelength_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "xray_wavelength",
+                ["xray_energy"],
+                self.ui,
+                self.model.update_xrays,
+            )
         )
 
         ui_attr = dir(self.ui)
