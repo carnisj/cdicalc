@@ -14,9 +14,10 @@ from typing import Optional
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
 default_units = {
-    "energy": "keV",
-    "wavelength": "angstrom",
     "distance": "m",
+    "energy": "keV",
+    "pixelsize": "um",
+    "wavelength": "angstrom",
     "unknown": "",
 }
 
@@ -114,6 +115,23 @@ class Model:
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
             ui.helptext.setText("The detector distance should be a string: e.g. '1 m'")
+
+    @staticmethod
+    def pixelsize_changed(ui: Ui_MainWindow):
+        input_text = ui.pixelsize.text()
+        try:
+            _pixelsize: Optional[Quantity] = units.Quantity(input_text)
+            _pixelsize = convert_unit(
+                quantity=_pixelsize, default_unit=default_units["pixelsize"]
+            )
+            if _pixelsize is None:
+                ui.helptext.setText("The detector pixel size should be in um")
+            else:
+                ui.helptext.setText(EMPTY_MSG)
+        except (AttributeError, ValueError, UndefinedUnitError):
+            ui.helptext.setText(
+                "The detector pixel size should be a string: e.g. '55 um'"
+            )
 
     @staticmethod
     def format_field(field: QLineEdit) -> None:

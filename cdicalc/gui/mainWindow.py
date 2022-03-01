@@ -27,20 +27,26 @@ class Ui_MainWindow(object):
         self.energy.setText("")
         self.energy.setObjectName("energy")
         self.label_energy = QtWidgets.QLabel(self.bcdi)
-        self.label_energy.setGeometry(QtCore.QRect(40, 10, 71, 20))
+        self.label_energy.setGeometry(QtCore.QRect(30, 10, 91, 20))
         self.label_energy.setObjectName("label_energy")
         self.wavelength = QtWidgets.QLineEdit(self.bcdi)
-        self.wavelength.setGeometry(QtCore.QRect(180, 30, 113, 20))
+        self.wavelength.setGeometry(QtCore.QRect(170, 30, 113, 20))
         self.wavelength.setObjectName("wavelength")
         self.label_wavelength = QtWidgets.QLabel(self.bcdi)
-        self.label_wavelength.setGeometry(QtCore.QRect(200, 10, 81, 20))
+        self.label_wavelength.setGeometry(QtCore.QRect(170, 10, 111, 20))
         self.label_wavelength.setObjectName("label_wavelength")
         self.distance = QtWidgets.QLineEdit(self.bcdi)
-        self.distance.setGeometry(QtCore.QRect(340, 30, 113, 20))
+        self.distance.setGeometry(QtCore.QRect(330, 30, 113, 20))
         self.distance.setObjectName("distance")
         self.label = QtWidgets.QLabel(self.bcdi)
-        self.label.setGeometry(QtCore.QRect(350, 9, 111, 21))
+        self.label.setGeometry(QtCore.QRect(330, 9, 111, 21))
         self.label.setObjectName("label")
+        self.pixelsize = QtWidgets.QLineEdit(self.bcdi)
+        self.pixelsize.setGeometry(QtCore.QRect(490, 30, 113, 20))
+        self.pixelsize.setObjectName("pixelsize")
+        self.label_2 = QtWidgets.QLabel(self.bcdi)
+        self.label_2.setGeometry(QtCore.QRect(490, 10, 111, 20))
+        self.label_2.setObjectName("label_2")
         self.tabWidget.addTab(self.bcdi, "")
         self.diffraction = QtWidgets.QWidget()
         self.diffraction.setObjectName("diffraction")
@@ -72,15 +78,7 @@ class Ui_MainWindow(object):
         self.label_energy.setText(_translate("MainWindow", "X-ray energy (keV)"))
         self.label_wavelength.setText(_translate("MainWindow", "Wavelength (A)"))
         self.label.setText(_translate("MainWindow", "Detector distance (m)"))
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.bcdi),
-            _translate("MainWindow", "BCDI calculations"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.diffraction),
-            _translate("MainWindow", "Diffraction calculations"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.cdi),
-            _translate("MainWindow", "CDI calculations"),
-        )
+        self.label_2.setText(_translate("MainWindow", "Detector pixel size (um)"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.bcdi), _translate("MainWindow", "BCDI calculations"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.diffraction), _translate("MainWindow", "Diffraction calculations"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.cdi), _translate("MainWindow", "CDI calculations"))

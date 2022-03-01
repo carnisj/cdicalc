@@ -46,9 +46,9 @@
      <widget class="QLabel" name="label_energy">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>30</x>
         <y>10</y>
-        <width>71</width>
+        <width>91</width>
         <height>20</height>
        </rect>
       </property>
@@ -59,7 +59,7 @@
      <widget class="QLineEdit" name="wavelength">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>170</x>
         <y>30</y>
         <width>113</width>
         <height>20</height>
@@ -69,9 +69,9 @@
      <widget class="QLabel" name="label_wavelength">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>170</x>
         <y>10</y>
-        <width>81</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -82,7 +82,7 @@
      <widget class="QLineEdit" name="distance">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>330</x>
         <y>30</y>
         <width>113</width>
         <height>20</height>
@@ -92,7 +92,7 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>350</x>
+        <x>330</x>
         <y>9</y>
         <width>111</width>
         <height>21</height>
@@ -100,6 +100,29 @@
       </property>
       <property name="text">
        <string>Detector distance (m)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="pixelsize">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>30</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>10</y>
+        <width>111</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Detector pixel size (um)</string>
       </property>
      </widget>
     </widget>
