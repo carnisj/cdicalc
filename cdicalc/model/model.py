@@ -6,10 +6,11 @@
 
 """Model to handle the calculations."""
 
+from math import pi, sin
 from pint import Quantity, UnitRegistry
 from pint.errors import DimensionalityError, UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit
-from typing import Callable, List, Optional, Union
+from typing import Callable, Dict, List, Optional, Union
 
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
@@ -57,62 +58,29 @@ def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Qu
         return None
 
 
+def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
+    """
+    Try to convert the string to a Quantity using the field default parameters.
+
+    :param text:
+    :param field_name:
+    :return:
+    """
+    try:
+        value: Optional[Quantity] = units.Quantity(text)
+        return convert_unit(quantity=value, default_unit=default_units[field_name][0])
+    except (AttributeError, ValueError, UndefinedUnitError):
+        return None
+
+
 class Model:
     def __init__(
         self,
         config,
     ):
         self._config = config
-        self._delta_twotheta: Optional[Quantity] = None
-        self._delta_q: Optional[Quantity] = None
-
-    @staticmethod
-    def crystal_size_changed(ui: Ui_MainWindow):
-        input_text = ui.detector_distance.text()
-        try:
-            _crystal_size: Optional[Quantity] = units.Quantity(input_text)
-            _crystal_size = convert_unit(
-                quantity=_crystal_size, default_unit=default_units["crystal_size"][0]
-            )
-            if _crystal_size is None:
-                ui.helptext.setText("The crystal size should be in nm")
-            else:
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText("The crystal size should be a string: e.g. '250 nm'")
-
-    @staticmethod
-    def detector_distance_changed(ui: Ui_MainWindow):
-        input_text = ui.detector_distance.text()
-        try:
-            _distance: Optional[Quantity] = units.Quantity(input_text)
-            _distance = convert_unit(
-                quantity=_distance, default_unit=default_units["detector_distance"][0]
-            )
-            if _distance is None:
-                ui.helptext.setText("The detector distance should be in m")
-            else:
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText("The detector distance should be a string: e.g. '1 m'")
-
-    @staticmethod
-    def detector_pixelsize_changed(ui: Ui_MainWindow):
-        # FIXME: this is a placeholder
-        input_text = ui.detector_pixelsize.text()
-        try:
-            _pixelsize: Optional[Quantity] = units.Quantity(input_text)
-            _pixelsize = convert_unit(
-                quantity=_pixelsize, default_unit=default_units["detector_pixelsize"][0]
-            )
-            if _pixelsize is None:
-                ui.helptext.setText("The detector pixel size should be in um")
-            else:
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText(
-                "The detector pixel size should be a string: e.g. '55 um'"
-            )
+        self._d2theta: Optional[Quantity] = None
+        self._dq: Optional[Quantity] = None
 
     @staticmethod
     def format_field(field: QLineEdit) -> None:
@@ -133,63 +101,18 @@ class Model:
         except (AttributeError, ValueError, UndefinedUnitError):
             field.setText(ERROR_MSG)
 
-    def fringe_spacing_changed(self, ui: Ui_MainWindow):
-        # FIXME: this is a placeholder
-        input_text = ui.fringe_spacing.text()
-        try:
-            _fringe_spacing: Optional[Quantity] = units.Quantity(input_text)
-            _fringe_spacing = convert_unit(
-                quantity=_fringe_spacing,
-                default_unit=default_units["fringe_spacing"][0],
-            )
-            if _fringe_spacing is None:
-                ui.helptext.setText("The fringe spacing should be a number")
-            else:
-                self.update_form(ui=ui)
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText(
-                "The fringe spacing should be a unit-less string: e.g. '3'"
-            )
-
-    @staticmethod
-    def sampling_ratio_changed(ui: Ui_MainWindow):
-        # FIXME: this is a placeholder
-        input_text = ui.sampling_ratio.text()
-        try:
-            _sampling_ratio: Optional[Quantity] = units.Quantity(input_text)
-            _sampling_ratio = convert_unit(
-                quantity=_sampling_ratio,
-                default_unit=default_units["sampling_ratio"][0],
-            )
-            if _sampling_ratio is None:
-                ui.helptext.setText("The sampling ratio should be a number")
-            else:
-                ui.helptext.setText(EMPTY_MSG)
-        except (AttributeError, ValueError, UndefinedUnitError):
-            ui.helptext.setText(
-                "The sampling ratio should be a unit-less string: e.g. '3'"
-            )
-
-    def update_form(self, ui: Ui_MainWindow):
-        fringe_spacing = ui.fringe_spacing.text()
-        # self._delta_twotheta =
-
-    @staticmethod
     def field_changed(
+        self,
         field_name: str,
-        target_fields: Union[List[str], str],
         ui: Ui_MainWindow,
-        callbacks: List[Callable],
+        callbacks: Dict[Callable, Optional[Union[List[str], str]]],
     ) -> None:
         """Update the slots connected to the changed signal."""
-        if isinstance(target_fields, str):
-            target_fields = [target_fields]
-        if isinstance(callbacks, Callable):
-            callbacks = [callbacks]
-        if len(callbacks) != len(target_fields):
-            raise ValueError(
-                "The number of callbacks and target fields should be identical."
+
+        if not isinstance(callbacks, dict):
+            raise TypeError(
+                "callbacks should be a dict of `callback: target_fields`"
+                f"key-value pairs, got {type(callbacks)}"
             )
 
         widget = getattr(ui, field_name)
@@ -200,44 +123,149 @@ class Model:
                 quantity=value, default_unit=default_units[field_name][0]
             )
             if value is None:
-                for _, target_field in enumerate(target_fields):
-                    target_widget = getattr(ui, target_field)
-                    target_widget.setText(ERROR_MSG)
+                self.send_error(callbacks=callbacks, ui=ui)
                 ui.helptext.setText(
                     f"{field_name} should be in {default_units[field_name][0]}"
                 )
             else:
-                for idx, callback in enumerate(callbacks):
+                for _, callback in enumerate(callbacks):
                     callback(
                         field_name=field_name,
                         value=value,
-                        target_field=target_fields[idx],
+                        target_fields=callbacks[callback],
                         ui=ui,
                     )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
-            for _, target_field in enumerate(target_fields):
-                target_widget = getattr(ui, target_field)
-                target_widget.setText(ERROR_MSG)
+            self.send_error(callbacks=callbacks, ui=ui)
             ui.helptext.setText(
                 f"{field_name} should be a string: e.g. {default_units[field_name][2]}"
             )
 
     @staticmethod
+    def send_error(
+        callbacks: Dict[Callable, Optional[Union[List[str], str]]],
+        ui: Ui_MainWindow,
+    ) -> None:
+        """
+        Update all target widgets with the error message
+
+        :param callbacks:
+        :param ui:
+        :return:
+        """
+        for _, (_, val) in enumerate(callbacks.items()):
+            if val is not None:
+                if isinstance(val, str):
+                    val = [val]
+                for _, target_field in enumerate(val):
+                    target_widget = getattr(ui, target_field)
+                    target_widget.setText(ERROR_MSG)
+
+    def update_d2theta(self, ui: Ui_MainWindow, **kwargs) -> None:
+        """
+        Update the value of d2theta.
+
+        d2theta is the angle in radian between two detector pixels, the origin of the
+        reference frame being at the sample position.
+        """
+        fringe_spacing = to_quantity(
+            ui.fringe_spacing.text(), field_name="fringe_spacing"
+        )
+        detector_pixelsize = to_quantity(
+            ui.detector_pixelsize.text(), field_name="detector_pixelsize"
+        )
+        detector_distance = to_quantity(
+            ui.detector_distance.text(), field_name="detector_distance"
+        )
+        print(fringe_spacing, detector_pixelsize, detector_distance)
+        if any(
+            val is None
+            for val in {fringe_spacing, detector_pixelsize, detector_distance}
+        ):
+            self._d2theta = None
+        else:
+            self._d2theta = units.Quantity(
+                fringe_spacing * detector_pixelsize / detector_distance, "radian"
+            )
+        self.update_dq(ui=ui)
+
+    def update_crystal_size(self, ui: Ui_MainWindow) -> None:
+        widget = ui.crystal_size
+        if self._dq is not None:
+            crystal_size = (2 * pi / self._dq).to("nm")
+            self.update_text(
+                widget=widget, field_name=widget.objectName(), value=crystal_size
+            )
+        else:
+            ui.crystal_size.setText(EMPTY_MSG)
+
+    def update_dq(self, ui: Ui_MainWindow) -> None:
+        """
+        Update the value of dq.
+
+        dq is the difference in diffusion vector between two detector pixels, the origin
+        of the reference frame being at the sample position.
+
+        :param ui:
+        :return:
+        """
+        xray_wavelength = to_quantity(
+            ui.xray_wavelength.text(), field_name="xray_wavelength"
+        )
+        if any(val is None for val in {xray_wavelength, self._d2theta}):
+            self._dq = None
+        else:
+            self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
+        self.update_crystal_size(ui=ui)
+
+    @staticmethod
+    def update_text(
+        widget: QLineEdit, field_name: str, value: Union[Quantity, str]
+    ) -> None:
+
+        if isinstance(value, units.Quantity):
+            widget.setText(
+                "{number:{precision}}".format(
+                    number=value.to(default_units[field_name][0]),
+                    precision=default_units[field_name][1],
+                )
+            )
+        elif isinstance(value, str):
+            widget.setText(value)
+        else:
+            raise TypeError(
+                f"value should be a string or a Quantity, got {type(value)}"
+            )
+
     def update_xrays(
-        field_name: str, value: Quantity, target_field: str, ui: Ui_MainWindow
-    ):
+        self,
+        value: Quantity,
+        target_fields: Optional[Union[List[str], str]],
+        ui: Ui_MainWindow,
+        **kwargs,
+    ) -> None:
         """
         Update the X-ray parameters.
 
         The target field can be the X-ray energy or the X-ray wavelength.
         """
-        print("In update_xrays")
+        if target_fields is None:
+            raise ValueError("target_fields should be a string, got None")
+        elif isinstance(target_fields, list):
+            if len(target_fields) != 1:
+                raise ValueError(
+                    "target_fields should be either 'xray_energy' or 'xray_wavelength'"
+                )
+            else:
+                target_field = target_fields[0]
+        elif isinstance(target_fields, str):
+            target_field = target_fields
+        else:
+            raise TypeError(f"Invalid type for target_fields: {type(target_fields)}")
+
         new_value = (planck_constant * speed_of_light / value).to_base_units()
         target_widget = getattr(ui, target_field)
-        target_widget.setText(
-            "{number:{precision}}".format(
-                number=new_value.to(default_units[target_field][0]),
-                precision=default_units[target_field][1],
-            )
+        self.update_text(
+            widget=target_widget, field_name=target_widget.objectName(), value=new_value
         )

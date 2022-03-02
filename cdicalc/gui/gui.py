@@ -25,37 +25,66 @@ class ApplicationWindow(QMainWindow):
 
     def _connectSignals(self):
 
-        self.ui.crystal_size.textEdited.connect(
-            partial(self.model.crystal_size_changed, self.ui)
-        )
+        # self.ui.crystal_size.textEdited.connect(
+        #     partial(
+        #         self.model.field_changed,
+        #         "crystal_size",
+        #         self.ui,
+        #         {self.model.update_d2theta: None},
+        #     )
+        # )
         self.ui.detector_distance.textEdited.connect(
-            partial(self.model.detector_distance_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "detector_distance",
+                self.ui,
+                {self.model.update_d2theta: None},
+            )
         )
         self.ui.detector_pixelsize.textEdited.connect(
-            partial(self.model.detector_pixelsize_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "detector_pixelsize",
+                self.ui,
+                {self.model.update_d2theta: None},
+            )
         )
         self.ui.fringe_spacing.textEdited.connect(
-            partial(self.model.fringe_spacing_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "fringe_spacing",
+                self.ui,
+                {self.model.update_d2theta: None},
+            )
         )
         self.ui.sampling_ratio.textEdited.connect(
-            partial(self.model.sampling_ratio_changed, self.ui)
+            partial(
+                self.model.field_changed,
+                "sampling_ratio",
+                self.ui,
+                {self.model.update_d2theta: None},
+            )
         )
         self.ui.xray_energy.textEdited.connect(
             partial(
                 self.model.field_changed,
                 "xray_energy",
-                ["xray_wavelength"],
                 self.ui,
-                [self.model.update_xrays],
+                {
+                    self.model.update_xrays: ["xray_wavelength"],
+                    self.model.update_d2theta: None,
+                },
             )
         )
         self.ui.xray_wavelength.textEdited.connect(
             partial(
                 self.model.field_changed,
                 "xray_wavelength",
-                ["xray_energy"],
                 self.ui,
-                self.model.update_xrays,
+                {
+                    self.model.update_xrays: ["xray_energy"],
+                    self.model.update_d2theta: None,
+                },
             )
         )
 
