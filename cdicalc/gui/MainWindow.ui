@@ -35,7 +35,7 @@
        <rect>
         <x>30</x>
         <y>30</y>
-        <width>101</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -46,7 +46,7 @@
      <widget class="QLabel" name="label_energy">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>40</x>
         <y>10</y>
         <width>101</width>
         <height>20</height>
@@ -59,7 +59,7 @@
      <widget class="QLineEdit" name="xray_wavelength">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>190</x>
         <y>30</y>
         <width>113</width>
         <height>20</height>
@@ -69,7 +69,7 @@
      <widget class="QLabel" name="label_wavelength">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>190</x>
         <y>10</y>
         <width>111</width>
         <height>20</height>
@@ -82,7 +82,7 @@
      <widget class="QLineEdit" name="detector_distance">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>350</x>
         <y>30</y>
         <width>113</width>
         <height>20</height>
@@ -92,7 +92,7 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>350</x>
         <y>9</y>
         <width>111</width>
         <height>21</height>
@@ -105,7 +105,7 @@
      <widget class="QLineEdit" name="detector_pixelsize">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>510</x>
         <y>30</y>
         <width>113</width>
         <height>20</height>
@@ -115,7 +115,7 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>510</x>
         <y>10</y>
         <width>111</width>
         <height>20</height>
@@ -125,33 +125,10 @@
        <string>Detector pixel size (um)</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="sampling_ratio">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>110</y>
-        <width>101</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>90</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Sampling ratio</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="fringe_spacing">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>30</x>
         <y>110</y>
         <width>113</width>
         <height>20</height>
@@ -161,20 +138,20 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>30</x>
         <y>90</y>
         <width>111</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Fringe spacing (in pixel)</string>
+       <string>Fringe spacing / sampling</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="crystal_size">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>190</x>
         <y>110</y>
         <width>113</width>
         <height>20</height>
@@ -184,7 +161,7 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>340</x>
+        <x>190</x>
         <y>90</y>
         <width>111</width>
         <height>20</height>
@@ -192,6 +169,110 @@
       </property>
       <property name="text">
        <string>Crystal size (nm)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="angular_sampling">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>190</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>170</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Angular sampling</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="min_detector_distance">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>110</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(230, 230, 230);</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>90</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Minimum detector distance (m)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="rocking_angle">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>190</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>170</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rocking angle (deg)</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="max_rocking_angle">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>190</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(230, 230, 230);</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>170</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Maximum rocking angle (deg)</string>
       </property>
      </widget>
     </widget>

@@ -6,10 +6,10 @@
 
 """Model to handle the calculations."""
 
-from math import pi, sin
+from math import pi, sin, asin
 from pint import Quantity, UnitRegistry
 from pint.errors import DimensionalityError, UndefinedUnitError
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLineEdit, QWidget
 from typing import Callable, Dict, List, Optional, Union
 
 from cdicalc.gui.mainWindow import Ui_MainWindow
@@ -19,6 +19,7 @@ default_units = {
     "detector_distance": ("m", "~.2f", "1.5 m"),
     "detector_pixelsize": ("um", "~.0f", "55 um"),
     "fringe_spacing": ("", "~.1f", "5"),
+    "min_detector_distance": ("m", "~.2f", "1.5 m"),
     "sampling_ratio": ("", "~.1f", "3"),
     "unknown": ("", "~.2f", "unknown"),
     "xray_energy": ("keV", "~.2f", "10 keV"),
@@ -83,23 +84,44 @@ class Model:
         self._dq: Optional[Quantity] = None
 
     @staticmethod
-    def format_field(field: QLineEdit) -> None:
-        input_text = field.text()
+    def clear_widget(
+        target_widgets: Union[List[QLineEdit], QLineEdit], **kwargs
+    ) -> None:
+
+        if isinstance(target_widgets, QWidget):
+            target_widgets = [target_widgets]
+
+        if isinstance(target_widgets, list):
+            for _, widget in enumerate(target_widgets):
+                if isinstance(widget, QWidget) and hasattr(widget, "setText"):
+                    widget.setText(EMPTY_MSG)
+                else:
+                    raise TypeError(f"Expecting a QLineEdit, got {type(widget)}")
+        else:
+            raise TypeError(
+                f"Expecting a widget or a list of widgets, got {type(target_widgets)}"
+            )
+
+    @staticmethod
+    def format_field(widget: QLineEdit) -> None:
+        input_text = widget.text()
         try:
             _quantity: Optional[Quantity] = units.Quantity(input_text)
             _quantity = convert_unit(
                 quantity=_quantity,
-                default_unit=default_units.get(field.objectName(), "unknown")[0],
+                default_unit=default_units.get(widget.objectName(), "unknown")[0],
             )
             if _quantity is not None:
-                field.setText(
+                widget.setText(
                     "{number:{precision}}".format(
                         number=_quantity,
-                        precision=default_units.get(field.objectName(), "unknown")[1],
+                        precision=default_units.get(widget.objectName(), "unknown")[1],
                     )
                 )
-        except (AttributeError, ValueError, UndefinedUnitError):
-            field.setText(ERROR_MSG)
+        except (AttributeError, UndefinedUnitError):
+            widget.setText(ERROR_MSG)
+        except ValueError:  # the widget is empty
+            widget.setText(EMPTY_MSG)
 
     def field_changed(
         self,
@@ -111,7 +133,7 @@ class Model:
 
         if not isinstance(callbacks, dict):
             raise TypeError(
-                "callbacks should be a dict of `callback: target_fields`"
+                "callbacks should be a dict of `callback: target_widgets`"
                 f"key-value pairs, got {type(callbacks)}"
             )
 
@@ -123,21 +145,20 @@ class Model:
                 quantity=value, default_unit=default_units[field_name][0]
             )
             if value is None:
-                self.send_error(callbacks=callbacks, ui=ui)
+                self.send_error(callbacks=callbacks)
                 ui.helptext.setText(
-                    f"{field_name} should be in {default_units[field_name][0]}"
+                    f"{field_name} should be a string: e.g. {default_units[field_name][2]}"
                 )
             else:
                 for _, callback in enumerate(callbacks):
                     callback(
-                        field_name=field_name,
                         value=value,
-                        target_fields=callbacks[callback],
+                        target_widgets=callbacks[callback],
                         ui=ui,
                     )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
-            self.send_error(callbacks=callbacks, ui=ui)
+            self.send_error(callbacks=callbacks)
             ui.helptext.setText(
                 f"{field_name} should be a string: e.g. {default_units[field_name][2]}"
             )
@@ -145,21 +166,18 @@ class Model:
     @staticmethod
     def send_error(
         callbacks: Dict[Callable, Optional[Union[List[str], str]]],
-        ui: Ui_MainWindow,
     ) -> None:
         """
         Update all target widgets with the error message
 
         :param callbacks:
-        :param ui:
         :return:
         """
         for _, (_, val) in enumerate(callbacks.items()):
             if val is not None:
                 if isinstance(val, str):
                     val = [val]
-                for _, target_field in enumerate(val):
-                    target_widget = getattr(ui, target_field)
+                for _, target_widget in enumerate(val):
                     target_widget.setText(ERROR_MSG)
 
     def update_d2theta(self, ui: Ui_MainWindow, **kwargs) -> None:
@@ -170,15 +188,20 @@ class Model:
         reference frame being at the sample position.
         """
         fringe_spacing = to_quantity(
-            ui.fringe_spacing.text(), field_name="fringe_spacing"
+            ui.fringe_spacing.text(), field_name=ui.fringe_spacing.objectName()
         )
         detector_pixelsize = to_quantity(
-            ui.detector_pixelsize.text(), field_name="detector_pixelsize"
+            ui.detector_pixelsize.text(), field_name=ui.detector_pixelsize.objectName()
         )
+        # use the detector distance if defined, or try with the minimum detector
+        # distance in the contrary
         detector_distance = to_quantity(
-            ui.detector_distance.text(), field_name="detector_distance"
+            ui.detector_distance.text(), field_name=ui.detector_distance.objectName()
+        ) or to_quantity(
+            ui.min_detector_distance.text(),
+            field_name=ui.min_detector_distance.objectName(),
         )
-        print(fringe_spacing, detector_pixelsize, detector_distance)
+
         if any(
             val is None
             for val in {fringe_spacing, detector_pixelsize, detector_distance}
@@ -194,13 +217,11 @@ class Model:
         widget = ui.crystal_size
         if self._dq is not None:
             crystal_size = (2 * pi / self._dq).to("nm")
-            self.update_text(
-                widget=widget, field_name=widget.objectName(), value=crystal_size
-            )
+            self.update_text(widget=widget, ui=ui, value=crystal_size)
         else:
-            ui.crystal_size.setText(EMPTY_MSG)
+            widget.setText(EMPTY_MSG)
 
-    def update_dq(self, ui: Ui_MainWindow) -> None:
+    def update_dq(self, ui: Ui_MainWindow, **kwargs) -> None:
         """
         Update the value of dq.
 
@@ -219,18 +240,51 @@ class Model:
             self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
         self.update_crystal_size(ui=ui)
 
+    def update_min_distance(self, ui: Ui_MainWindow, **kwargs) -> None:
+        widget = ui.min_detector_distance
+        fringe_spacing = to_quantity(
+            ui.fringe_spacing.text(), field_name=ui.fringe_spacing.objectName()
+        )
+        detector_pixelsize = to_quantity(
+            ui.detector_pixelsize.text(), field_name=ui.detector_pixelsize.objectName()
+        )
+        crystal_size = to_quantity(
+            ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
+        )
+        wavelength = to_quantity(
+            ui.xray_wavelength.text(), field_name=ui.xray_wavelength.objectName()
+        )
+        if any(
+            val is None for val in {fringe_spacing, detector_pixelsize, crystal_size}
+        ):
+            widget.setText(EMPTY_MSG)
+        else:
+            min_detector_distance = (
+                fringe_spacing
+                * detector_pixelsize
+                / (2 * asin(wavelength / (2 * crystal_size)))
+            )
+            self.update_text(widget=widget, ui=ui, value=min_detector_distance)
+            ui.detector_distance.setText(EMPTY_MSG)
+
     @staticmethod
     def update_text(
-        widget: QLineEdit, field_name: str, value: Union[Quantity, str]
+        widget: QLineEdit, ui: Ui_MainWindow, value: Union[Quantity, str]
     ) -> None:
 
         if isinstance(value, units.Quantity):
-            widget.setText(
-                "{number:{precision}}".format(
-                    number=value.to(default_units[field_name][0]),
-                    precision=default_units[field_name][1],
+            try:
+                widget.setText(
+                    "{number:{precision}}".format(
+                        number=value.to(default_units[widget.objectName()][0]),
+                        precision=default_units[widget.objectName()][1],
+                    )
                 )
-            )
+            except KeyError:
+                ui.helptext.setText(
+                    f"{widget.objectName()} not defined in default units"
+                )
+                widget.setText(str(value))
         elif isinstance(value, str):
             widget.setText(value)
         else:
@@ -241,7 +295,7 @@ class Model:
     def update_xrays(
         self,
         value: Quantity,
-        target_fields: Optional[Union[List[str], str]],
+        target_widgets: Optional[Union[List[QLineEdit], QLineEdit]],
         ui: Ui_MainWindow,
         **kwargs,
     ) -> None:
@@ -250,22 +304,19 @@ class Model:
 
         The target field can be the X-ray energy or the X-ray wavelength.
         """
-        if target_fields is None:
-            raise ValueError("target_fields should be a string, got None")
-        elif isinstance(target_fields, list):
-            if len(target_fields) != 1:
-                raise ValueError(
-                    "target_fields should be either 'xray_energy' or 'xray_wavelength'"
-                )
+        if target_widgets is None:
+            raise ValueError(
+                "target_widgets should be a widget or a list of widgets, not None"
+            )
+        elif isinstance(target_widgets, list):
+            if len(target_widgets) != 1:
+                raise ValueError("target_widgets should be a single widget")
             else:
-                target_field = target_fields[0]
-        elif isinstance(target_fields, str):
-            target_field = target_fields
+                target_widget = target_widgets[0]
+        elif isinstance(target_widgets, QLineEdit):
+            target_widget = target_widgets
         else:
-            raise TypeError(f"Invalid type for target_fields: {type(target_fields)}")
+            raise TypeError(f"Invalid type for target_widgets: {type(target_widgets)}")
 
         new_value = (planck_constant * speed_of_light / value).to_base_units()
-        target_widget = getattr(ui, target_field)
-        self.update_text(
-            widget=target_widget, field_name=target_widget.objectName(), value=new_value
-        )
+        self.update_text(widget=target_widget, ui=ui, value=new_value)
