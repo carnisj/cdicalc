@@ -150,7 +150,8 @@ class Model:
             if value is None:
                 self.send_error(callbacks=callbacks)
                 ui.helptext.setText(
-                    f"{field_name} should be a string: e.g. {default_units[field_name][2]}"
+                    f" enter a valid {field_name}: "
+                    f"e.g. {default_units[field_name][2]}"
                 )
             else:
                 for _, callback in enumerate(callbacks):
@@ -163,7 +164,7 @@ class Model:
         except (AttributeError, ValueError, UndefinedUnitError):
             self.send_error(callbacks=callbacks)
             ui.helptext.setText(
-                f"{field_name} should be a string: e.g. {default_units[field_name][2]}"
+                f" enter a valid {field_name}: " f"e.g. {default_units[field_name][2]}"
             )
 
     @staticmethod
@@ -328,7 +329,7 @@ class Model:
                 )
             except KeyError:
                 ui.helptext.setText(
-                    f"{widget.objectName()} not defined in default units"
+                    f" {widget.objectName()} not defined in default units"
                 )
                 widget.setText(str(value))
         elif isinstance(value, str):
