@@ -15,11 +15,14 @@ from typing import Callable, Dict, List, Optional, Union
 from cdicalc.gui.mainWindow import Ui_MainWindow
 
 default_units = {
+    "angular_sampling": ("", "~.1f", "3"),
     "crystal_size": ("nm", "~.0f", "250 nm"),
     "detector_distance": ("m", "~.2f", "1.5 m"),
     "detector_pixelsize": ("um", "~.0f", "55 um"),
     "fringe_spacing": ("", "~.1f", "5"),
+    "max_rocking_angle": ("deg", "~.4f", "0.01 deg"),
     "min_detector_distance": ("m", "~.2f", "1.5 m"),
+    "rocking_angle": ("deg", "~.4f", "0.01 deg"),
     "sampling_ratio": ("", "~.1f", "3"),
     "unknown": ("", "~.2f", "unknown"),
     "xray_energy": ("keV", "~.2f", "10 keV"),
@@ -180,6 +183,27 @@ class Model:
                 for _, target_widget in enumerate(val):
                     target_widget.setText(ERROR_MSG)
 
+    def update_angular_sampling(self, ui: Ui_MainWindow, **kwargs) -> None:
+        widget = ui.angular_sampling
+        crystal_size = to_quantity(
+            ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
+        )
+        rocking_angle = to_quantity(
+            ui.rocking_angle.text(), field_name=ui.rocking_angle.objectName()
+        )
+        wavelength = to_quantity(
+            ui.xray_wavelength.text(), field_name=ui.xray_wavelength.objectName()
+        )
+        if any(val is None for val in {crystal_size, rocking_angle, wavelength}) or (
+            rocking_angle == 0
+        ):
+            widget.setText(EMPTY_MSG)
+        else:
+            angular_sampling = asin(wavelength / (2 * crystal_size)) / rocking_angle.to(
+                "radian"
+            )
+            self.update_text(widget=widget, ui=ui, value=angular_sampling)
+
     def update_d2theta(self, ui: Ui_MainWindow, **kwargs) -> None:
         """
         Update the value of d2theta.
@@ -239,6 +263,28 @@ class Model:
         else:
             self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
         self.update_crystal_size(ui=ui)
+
+    def update_max_rocking_angle(self, ui: Ui_MainWindow, **kwargs) -> None:
+        widget = ui.max_rocking_angle
+        crystal_size = to_quantity(
+            ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
+        )
+        angular_sampling = to_quantity(
+            ui.angular_sampling.text(), field_name=ui.angular_sampling.objectName()
+        )
+        wavelength = to_quantity(
+            ui.xray_wavelength.text(), field_name=ui.xray_wavelength.objectName()
+        )
+        if any(val is None for val in {crystal_size, angular_sampling, wavelength}) or (
+            angular_sampling == 0
+        ):
+            widget.setText(EMPTY_MSG)
+        else:
+            max_rocking_angle = units.Quantity(
+                asin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
+            )
+            self.update_text(widget=widget, ui=ui, value=max_rocking_angle)
+            ui.rocking_angle.setText(EMPTY_MSG)
 
     def update_min_distance(self, ui: Ui_MainWindow, **kwargs) -> None:
         widget = ui.min_detector_distance
@@ -318,5 +364,8 @@ class Model:
         else:
             raise TypeError(f"Invalid type for target_widgets: {type(target_widgets)}")
 
-        new_value = (planck_constant * speed_of_light / value).to_base_units()
-        self.update_text(widget=target_widget, ui=ui, value=new_value)
+        if value == 0:
+            target_widget.setText(EMPTY_MSG)
+        else:
+            new_value = (planck_constant * speed_of_light / value).to_base_units()
+            self.update_text(widget=target_widget, ui=ui, value=new_value)

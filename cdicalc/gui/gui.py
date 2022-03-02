@@ -25,6 +25,14 @@ class ApplicationWindow(QMainWindow):
 
     def _connectSignals(self) -> None:
         """Connect signals to slots."""
+        # slots for angular_sampling
+        self.ui.angular_sampling.textEdited.connect(
+            partial(
+                self.model.update_max_rocking_angle,
+                self.ui,
+            )
+        )
+
         # slots for crystal_size
         self.ui.crystal_size.textEdited.connect(
             partial(
@@ -78,6 +86,19 @@ class ApplicationWindow(QMainWindow):
             )
         )
 
+        # slots for rocking_angle
+        self.ui.rocking_angle.textEdited.connect(
+            partial(
+                self.model.field_changed,
+                self.ui.rocking_angle.objectName(),
+                self.ui,
+                {
+                    self.model.update_angular_sampling: None,
+                    self.model.clear_widget: [self.ui.max_rocking_angle],
+                },
+            )
+        )
+
         # slots for xray_energy
         self.ui.xray_energy.textEdited.connect(
             partial(
@@ -110,6 +131,7 @@ class ApplicationWindow(QMainWindow):
             )
         )
 
+        # This callback rewrites widget values with the configured unit
         ui_attr = dir(self.ui)
         for idx, attr in enumerate(ui_attr):
             if isinstance(getattr(self.ui, attr), QLineEdit):
