@@ -25,7 +25,9 @@ setup(
     # the file needs to be in a package
     # data_files=[('bcdi/data', ['bcdi/data/S978_LLKf000.460.cxi'])],
     # data files will be installed outside of the package, which is not ideal
-    scripts=[],
+    scripts=[
+        "scripts/cdicalc_client.py",
+    ],
     # metadata
     author="Jerome Carnis",
     author_email="carnis_jerome@yahoo.fr",
