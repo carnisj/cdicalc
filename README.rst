@@ -11,4 +11,11 @@ Installation:
 - ``git clone https://github.com/carnisj/cdicalc.git``
 - (Optional) Create a virtual environment (Python3.9) and activate it
 - ``cd cdicalc``
-- ``pip install .``
+- ``pip install -r requirements.txt``
+
+Usage:
+------
+
+- ``cd cdicalc``
+- ``python client.py``
+
