@@ -1,5 +1,6 @@
 include *.gitignore
 include *.ini
+include *.pylintrc
 include *.md
 recursive-include .github *.md
 include *.rst
