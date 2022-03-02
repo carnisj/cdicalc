@@ -5,8 +5,10 @@
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
 from functools import partial
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
 from cdicalc.gui.mainWindow import Ui_main_window
+from cdicalc.resources import resources_cdicalc
 
 
 class ApplicationWindow(QMainWindow):
@@ -19,7 +21,7 @@ class ApplicationWindow(QMainWindow):
         # Set some main window's properties
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
-
+        self.setWindowIcon(QIcon(":/icons/diffract.png"))
         # Connect signals and slots
         self._connectSignals()
 
