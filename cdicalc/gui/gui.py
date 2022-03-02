@@ -6,7 +6,7 @@
 
 from functools import partial
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
-from cdicalc.gui.mainWindow import Ui_MainWindow
+from cdicalc.gui.mainWindow import Ui_main_window
 
 
 class ApplicationWindow(QMainWindow):
@@ -17,7 +17,7 @@ class ApplicationWindow(QMainWindow):
         super().__init__()
         self.model = model
         # Set some main window's properties
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_main_window()
         self.ui.setupUi(self)
 
         # Connect signals and slots

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
+# Form implementation generated from reading ui file 'mainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -11,11 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(759, 563)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_main_window(object):
+    def setupUi(self, main_window):
+        main_window.setObjectName("main_window")
+        main_window.resize(759, 563)
+        main_window.setStyleSheet("background-color: rgb(204, 131, 255);")
+        self.centralwidget = QtWidgets.QWidget(main_window)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
@@ -30,6 +31,7 @@ class Ui_MainWindow(object):
         self.helptext.setObjectName("helptext")
         self.verticalLayout.addWidget(self.helptext)
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.tabWidget.setStyleSheet("background-color: rgb(197, 243, 242);")
         self.tabWidget.setObjectName("tabWidget")
         self.bcdi = QtWidgets.QWidget()
         self.bcdi.setObjectName("bcdi")
@@ -45,6 +47,7 @@ class Ui_MainWindow(object):
         self.label_energy.setObjectName("label_energy")
         self.verticalLayout_3.addWidget(self.label_energy)
         self.xray_energy = QtWidgets.QLineEdit(self.bcdi)
+        self.xray_energy.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.xray_energy.setText("")
         self.xray_energy.setObjectName("xray_energy")
         self.verticalLayout_3.addWidget(self.xray_energy)
@@ -59,6 +62,7 @@ class Ui_MainWindow(object):
         self.label_wavelength.setObjectName("label_wavelength")
         self.verticalLayout_4.addWidget(self.label_wavelength)
         self.xray_wavelength = QtWidgets.QLineEdit(self.bcdi)
+        self.xray_wavelength.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.xray_wavelength.setObjectName("xray_wavelength")
         self.verticalLayout_4.addWidget(self.xray_wavelength)
         self.horizontalLayout_2.addLayout(self.verticalLayout_4)
@@ -72,6 +76,7 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout_5.addWidget(self.label)
         self.detector_distance = QtWidgets.QLineEdit(self.bcdi)
+        self.detector_distance.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.detector_distance.setObjectName("detector_distance")
         self.verticalLayout_5.addWidget(self.detector_distance)
         self.horizontalLayout_2.addLayout(self.verticalLayout_5)
@@ -85,6 +90,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout_6.addWidget(self.label_2)
         self.detector_pixelsize = QtWidgets.QLineEdit(self.bcdi)
+        self.detector_pixelsize.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.detector_pixelsize.setObjectName("detector_pixelsize")
         self.verticalLayout_6.addWidget(self.detector_pixelsize)
         self.horizontalLayout_2.addLayout(self.verticalLayout_6)
@@ -101,6 +107,7 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName("label_4")
         self.verticalLayout_7.addWidget(self.label_4)
         self.fringe_spacing = QtWidgets.QLineEdit(self.bcdi)
+        self.fringe_spacing.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.fringe_spacing.setObjectName("fringe_spacing")
         self.verticalLayout_7.addWidget(self.fringe_spacing)
         self.horizontalLayout_3.addLayout(self.verticalLayout_7)
@@ -114,6 +121,7 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName("label_5")
         self.verticalLayout_8.addWidget(self.label_5)
         self.crystal_size = QtWidgets.QLineEdit(self.bcdi)
+        self.crystal_size.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.crystal_size.setObjectName("crystal_size")
         self.verticalLayout_8.addWidget(self.crystal_size)
         self.horizontalLayout_3.addLayout(self.verticalLayout_8)
@@ -147,6 +155,7 @@ class Ui_MainWindow(object):
         self.label_7.setObjectName("label_7")
         self.verticalLayout_11.addWidget(self.label_7)
         self.rocking_angle = QtWidgets.QLineEdit(self.bcdi)
+        self.rocking_angle.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.rocking_angle.setObjectName("rocking_angle")
         self.verticalLayout_11.addWidget(self.rocking_angle)
         self.horizontalLayout_4.addLayout(self.verticalLayout_11)
@@ -160,6 +169,7 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.verticalLayout_12.addWidget(self.label_3)
         self.angular_sampling = QtWidgets.QLineEdit(self.bcdi)
+        self.angular_sampling.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.angular_sampling.setObjectName("angular_sampling")
         self.verticalLayout_12.addWidget(self.angular_sampling)
         self.horizontalLayout_4.addLayout(self.verticalLayout_12)
@@ -170,6 +180,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_13 = QtWidgets.QVBoxLayout()
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.label_8 = QtWidgets.QLabel(self.bcdi)
+        self.label_8.setStyleSheet("")
         self.label_8.setObjectName("label_8")
         self.verticalLayout_13.addWidget(self.label_8)
         self.max_rocking_angle = QtWidgets.QLineEdit(self.bcdi)
@@ -181,51 +192,47 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.horizontalLayout_4)
         self.verticalLayout_15.addLayout(self.verticalLayout_10)
         self.tabWidget.addTab(self.bcdi, "")
-        self.diffraction = QtWidgets.QWidget()
-        self.diffraction.setObjectName("diffraction")
-        self.tabWidget.addTab(self.diffraction, "")
         self.cdi = QtWidgets.QWidget()
         self.cdi.setObjectName("cdi")
         self.tabWidget.addTab(self.cdi, "")
+        self.diffraction = QtWidgets.QWidget()
+        self.diffraction.setObjectName("diffraction")
+        self.tabWidget.addTab(self.diffraction, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 759, 18))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        main_window.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(main_window)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        main_window.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(main_window)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(main_window)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_energy.setText(_translate("MainWindow", "X-ray energy (keV)"))
-        self.label_wavelength.setText(_translate("MainWindow", "Wavelength (A)"))
-        self.label.setText(_translate("MainWindow", "Detector distance (m)"))
-        self.label_2.setText(_translate("MainWindow", "Detector pixel size (um)"))
+        main_window.setWindowTitle(_translate("main_window", "CDICALC"))
+        self.label_energy.setText(_translate("main_window", "X-ray energy (keV)"))
+        self.label_wavelength.setText(_translate("main_window", "Wavelength (A)"))
+        self.label.setText(_translate("main_window", "Detector distance (m)"))
+        self.label_2.setText(_translate("main_window", "Detector pixel size (um)"))
         self.label_4.setText(
-            _translate("MainWindow", "Fringe spacing (pixel)\n" "/ sampling")
+            _translate("main_window", "Fringe spacing (pixel)\n" "/ sampling")
         )
-        self.label_5.setText(_translate("MainWindow", "Crystal size (nm)"))
-        self.label_6.setText(_translate("MainWindow", "Min detector distance (m)"))
-        self.label_7.setText(_translate("MainWindow", "Rocking angle (deg)"))
-        self.label_3.setText(_translate("MainWindow", "Angular sampling"))
-        self.label_8.setText(_translate("MainWindow", "Max rocking angle (deg)"))
+        self.label_5.setText(_translate("main_window", "Crystal size (nm)"))
+        self.label_6.setText(_translate("main_window", "Min detector distance (m)"))
+        self.label_7.setText(_translate("main_window", "Rocking angle (deg)"))
+        self.label_3.setText(_translate("main_window", "Angular sampling"))
+        self.label_8.setText(_translate("main_window", "Max rocking angle (deg)"))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.bcdi),
-            _translate("MainWindow", "BCDI calculations"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.diffraction),
-            _translate("MainWindow", "Diffraction calculations"),
+            _translate("main_window", "BCDI calculations"),
         )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.cdi),
-            _translate("MainWindow", "CDI calculations"),
+            _translate("main_window", "CDI calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.diffraction),
+            _translate("main_window", "Diffraction calculations"),
         )

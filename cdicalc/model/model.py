@@ -12,7 +12,7 @@ from pint.errors import DimensionalityError, UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit, QWidget
 from typing import Callable, Dict, List, Optional, Union
 
-from cdicalc.gui.mainWindow import Ui_MainWindow
+from cdicalc.gui.mainWindow import Ui_main_window
 
 default_units = {
     "angular_sampling": ("", "~.1f", "3"),
@@ -129,7 +129,7 @@ class Model:
     def field_changed(
         self,
         field_name: str,
-        ui: Ui_MainWindow,
+        ui: Ui_main_window,
         callbacks: Dict[Callable, Optional[Union[List[str], str]]],
     ) -> None:
         """Update the slots connected to the changed signal."""
@@ -184,7 +184,7 @@ class Model:
                 for _, target_widget in enumerate(val):
                     target_widget.setText(ERROR_MSG)
 
-    def update_angular_sampling(self, ui: Ui_MainWindow, **kwargs) -> None:
+    def update_angular_sampling(self, ui: Ui_main_window, **kwargs) -> None:
         widget = ui.angular_sampling
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -205,7 +205,7 @@ class Model:
             )
             self.update_text(widget=widget, ui=ui, value=angular_sampling)
 
-    def update_d2theta(self, ui: Ui_MainWindow, **kwargs) -> None:
+    def update_d2theta(self, ui: Ui_main_window, **kwargs) -> None:
         """
         Update the value of d2theta.
 
@@ -238,7 +238,7 @@ class Model:
             )
         self.update_dq(ui=ui)
 
-    def update_crystal_size(self, ui: Ui_MainWindow) -> None:
+    def update_crystal_size(self, ui: Ui_main_window) -> None:
         widget = ui.crystal_size
         if self._dq is not None:
             crystal_size = (2 * pi / self._dq).to("nm")
@@ -246,7 +246,7 @@ class Model:
         else:
             widget.setText(EMPTY_MSG)
 
-    def update_dq(self, ui: Ui_MainWindow, **kwargs) -> None:
+    def update_dq(self, ui: Ui_main_window, **kwargs) -> None:
         """
         Update the value of dq.
 
@@ -265,7 +265,7 @@ class Model:
             self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
         self.update_crystal_size(ui=ui)
 
-    def update_max_rocking_angle(self, ui: Ui_MainWindow, **kwargs) -> None:
+    def update_max_rocking_angle(self, ui: Ui_main_window, **kwargs) -> None:
         widget = ui.max_rocking_angle
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -287,7 +287,7 @@ class Model:
             self.update_text(widget=widget, ui=ui, value=max_rocking_angle)
             ui.rocking_angle.setText(EMPTY_MSG)
 
-    def update_min_distance(self, ui: Ui_MainWindow, **kwargs) -> None:
+    def update_min_distance(self, ui: Ui_main_window, **kwargs) -> None:
         widget = ui.min_detector_distance
         fringe_spacing = to_quantity(
             ui.fringe_spacing.text(), field_name=ui.fringe_spacing.objectName()
@@ -316,7 +316,7 @@ class Model:
 
     @staticmethod
     def update_text(
-        widget: QLineEdit, ui: Ui_MainWindow, value: Union[Quantity, str]
+        widget: QLineEdit, ui: Ui_main_window, value: Union[Quantity, str]
     ) -> None:
 
         if isinstance(value, units.Quantity):
@@ -343,7 +343,7 @@ class Model:
         self,
         value: Quantity,
         target_widgets: Optional[Union[List[QLineEdit], QLineEdit]],
-        ui: Ui_MainWindow,
+        ui: Ui_main_window,
         **kwargs,
     ) -> None:
         """

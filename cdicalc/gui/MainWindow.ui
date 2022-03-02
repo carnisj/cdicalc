@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>CDICALC</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(204, 131, 255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -33,6 +36,9 @@ color: rgb(255, 255, 255);</string>
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(197, 243, 242);</string>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -56,6 +62,9 @@ color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QLineEdit" name="xray_energy">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -86,7 +95,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="xray_wavelength"/>
+                 <widget class="QLineEdit" name="xray_wavelength">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -113,7 +126,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="detector_distance"/>
+                 <widget class="QLineEdit" name="detector_distance">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -140,7 +157,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="detector_pixelsize"/>
+                 <widget class="QLineEdit" name="detector_pixelsize">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -172,7 +193,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="fringe_spacing"/>
+                 <widget class="QLineEdit" name="fringe_spacing">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -199,7 +224,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="crystal_size"/>
+                 <widget class="QLineEdit" name="crystal_size">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -264,7 +293,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="rocking_angle"/>
+                 <widget class="QLineEdit" name="rocking_angle">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -291,7 +324,11 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="angular_sampling"/>
+                 <widget class="QLineEdit" name="angular_sampling">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 255);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -312,6 +349,9 @@ color: rgb(255, 255, 255);</string>
                <layout class="QVBoxLayout" name="verticalLayout_13">
                 <item>
                  <widget class="QLabel" name="label_8">
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
                   <property name="text">
                    <string>Max rocking angle (deg)</string>
                   </property>
@@ -335,14 +375,14 @@ color: rgb(255, 255, 255);</string>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="diffraction">
-         <attribute name="title">
-          <string>Diffraction calculations</string>
-         </attribute>
-        </widget>
         <widget class="QWidget" name="cdi">
          <attribute name="title">
           <string>CDI calculations</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="diffraction">
+         <attribute name="title">
+          <string>Diffraction calculations</string>
          </attribute>
         </widget>
        </widget>
@@ -350,16 +390,6 @@ color: rgb(255, 255, 255);</string>
      </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>759</width>
-     <height>18</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
