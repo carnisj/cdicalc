@@ -17,7 +17,7 @@ with open(path.join(here, "README.rst"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="cdical",
+    name="cdicalc",
     version=__version__,
     packages=find_packages(),
     include_package_data=True,
@@ -40,12 +40,7 @@ setup(
     url="https://github.com/carnisj/cdicalc",
     project_urls={},
     python_requires=">=3.8*",
-    install_requires=[
-        "pint",
-        "xrayutilities",
-        "pyqt5",
-        "pyyaml"
-    ],
+    install_requires=["pint", "xrayutilities", "pyqt5", "pyyaml"],
     extras_require={
         "dev": [
             "black",

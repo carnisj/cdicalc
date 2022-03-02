@@ -15,7 +15,7 @@ def get_path():
 
 def get_version():
     """Get the version of the distribution."""
-    with open("bcdi/__init__.py", "r") as version_file:
+    with open("cdicalc/__init__.py", "r") as version_file:
         version = version_file.readlines()[-1].split("=")[1].strip().split('"')[1]
     return version
 
@@ -32,24 +32,24 @@ def task_black():
     }
 
 
-# def task_clean_dist():
-#     """Remove the build directory and its content."""
-#
-#     def delete_dir(dirname):
-#         """Delete the directory if it exists."""
-#         path = os.path.join(get_path(), dirname).replace("\\", "/")
-#         if os.path.isdir(path):
-#             shutil.rmtree(path)
-#             print(f"\n\tDeleted {path}\n")
-#         else:
-#             print("\n\tNo build directory to delete.\n")
-#
-#     return {
-#         "actions": [(delete_dir, ["dist/"])],
-#         "verbosity": 2,
-#     }
-#
-#
+def task_clean_dist():
+    """Remove the build directory and its content."""
+
+    def delete_dir(dirname):
+        """Delete the directory if it exists."""
+        path = os.path.join(get_path(), dirname).replace("\\", "/")
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+            print(f"\n\tDeleted {path}\n")
+        else:
+            print("\n\tNo build directory to delete.\n")
+
+    return {
+        "actions": [(delete_dir, ["dist/"])],
+        "verbosity": 2,
+    }
+
+
 # def task_clean_doc():
 #     """Remove the compiled documentation."""
 #
@@ -164,37 +164,37 @@ def task_mypy():
 #     }
 
 
-# def task_build_distribution():
-#     """Build the distribution."""
-#     return {
-#         "actions": ["python setup.py sdist bdist_wheel"],
-#         "targets": [f"dist/bcdi-{get_version()}.tar.gz"],
-#         "verbosity": 1,
-#     }
+def task_build_distribution():
+    """Build the distribution."""
+    return {
+        "actions": ["python setup.py sdist bdist_wheel"],
+        "targets": [f"dist/cdicalc-{get_version()}.tar.gz"],
+        "verbosity": 1,
+    }
 
 
-# def task_clean_build():
-#     """Remove the build directory"""
-#
-#     def delete_dir(dirname):
-#         """Delete the directory if it exists."""
-#         path = os.path.join(get_path(), dirname).replace("\\", "/")
-#         if os.path.isdir(path):
-#             shutil.rmtree(path)
-#             print(f"\n\tDeleted {path}\n")
-#         else:
-#             print("\n\tNo build directory to delete.\n")
-#
-#     return {
-#         "actions": [(delete_dir, ["build/"])],
-#         "verbosity": 2,
-#     }
+def task_clean_build():
+    """Remove the build directory"""
+
+    def delete_dir(dirname):
+        """Delete the directory if it exists."""
+        path = os.path.join(get_path(), dirname).replace("\\", "/")
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+            print(f"\n\tDeleted {path}\n")
+        else:
+            print("\n\tNo build directory to delete.\n")
+
+    return {
+        "actions": [(delete_dir, ["build/"])],
+        "verbosity": 2,
+    }
 
 
-# def task_check_long_description_pypi():
-#     """Check whether the long description will render correctly on PyPI."""
-#     return {
-#         "actions": ["twine check dist/*"],
-#         "file_dep": [f"dist/bcdi-{get_version()}.tar.gz"],
-#         "verbosity": 2,
-#     }
+def task_check_long_description_pypi():
+    """Check whether the long description will render correctly on PyPI."""
+    return {
+        "actions": ["twine check dist/*"],
+        "file_dep": [f"dist/cdicalc-{get_version()}.tar.gz"],
+        "verbosity": 2,
+    }
