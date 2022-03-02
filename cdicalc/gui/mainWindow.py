@@ -100,6 +100,15 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Sampling ratio"))
         self.label_4.setText(_translate("MainWindow", "Fringe spacing (in pixel)"))
         self.label_5.setText(_translate("MainWindow", "Crystal size (nm)"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.bcdi), _translate("MainWindow", "BCDI calculations"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.diffraction), _translate("MainWindow", "Diffraction calculations"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.cdi), _translate("MainWindow", "CDI calculations"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.bcdi),
+            _translate("MainWindow", "BCDI calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.diffraction),
+            _translate("MainWindow", "Diffraction calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.cdi),
+            _translate("MainWindow", "CDI calculations"),
+        )
