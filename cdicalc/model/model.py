@@ -302,7 +302,9 @@ class Model:
             ui.xray_wavelength.text(), field_name=ui.xray_wavelength.objectName()
         )
         if any(
-            val is None for val in {fringe_spacing, detector_pixelsize, crystal_size}
+            val is None for val in {
+                fringe_spacing, detector_pixelsize, crystal_size, wavelength
+            }
         ):
             widget.setText(EMPTY_MSG)
         else:
