@@ -185,7 +185,7 @@ class Model_BCDI(Model):
         ):
             widget.setText(EMPTY_MSG)
         else:
-            angular_sampling = np.asin(
+            angular_sampling = np.arcsin(
                 wavelength / (2 * crystal_size)
             ) / rocking_angle.to("radian")
             self.update_text(widget=widget, ui=ui, value=angular_sampling)
@@ -279,8 +279,8 @@ class Model_BCDI(Model):
         ):
             widget.setText(EMPTY_MSG)
         else:
-            max_rocking_angle = units.Quantity(
-                np.asin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
+            max_rocking_angle: Quantity = units.Quantity(
+                np.arcsin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
             )
             self.update_text(widget=widget, ui=ui, value=max_rocking_angle)
             ui.rocking_angle.setText(EMPTY_MSG)
@@ -312,7 +312,7 @@ class Model_BCDI(Model):
             min_detector_distance = (
                 fringe_spacing
                 * detector_pixelsize
-                / (2 * np.asin(wavelength / (2 * crystal_size)))
+                / (2 * np.arcsin(wavelength / (2 * crystal_size)))
             )
             self.update_text(widget=widget, ui=ui, value=min_detector_distance)
             ui.detector_distance.setText(EMPTY_MSG)
