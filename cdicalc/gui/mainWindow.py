@@ -198,6 +198,9 @@ class Ui_main_window(object):
         self.diffraction = QtWidgets.QWidget()
         self.diffraction.setObjectName("diffraction")
         self.tabWidget.addTab(self.diffraction, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tabWidget.addTab(self.tab, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
@@ -206,7 +209,7 @@ class Ui_main_window(object):
         main_window.setStatusBar(self.statusbar)
 
         self.retranslateUi(main_window)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -235,4 +238,8 @@ class Ui_main_window(object):
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.diffraction),
             _translate("main_window", "Diffraction calculations"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab),
+            _translate("main_window", "Coherence calculations"),
         )

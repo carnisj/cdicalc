@@ -23,10 +23,25 @@ class ApplicationWindow(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowIcon(QIcon(":/icons/diffract.png"))
         # Connect signals and slots
-        self._connectSignals()
+        self._connect_tab_bcdi()
+        self._connect_QLineEdits()
 
-    def _connectSignals(self) -> None:
-        """Connect signals to slots."""
+    def _connect_QLineEdits(self) -> None:
+        """
+        Connect signals from QLineEdit widgets to the formatting callback.
+
+        The callback rewrites widget values with the configured unit, using
+        str(Quantity).
+        """
+
+        ui_attr = dir(self.ui)
+        for idx, attr in enumerate(ui_attr):
+            if isinstance(getattr(self.ui, attr), QLineEdit):
+                widget = getattr(self.ui, attr)
+                widget.editingFinished.connect(partial(self.model.format_field, widget))
+
+    def _connect_tab_bcdi(self) -> None:
+        """Connect signals to slots for the tab on BCDI calculations."""
         # slots for angular_sampling
         self.ui.angular_sampling.textEdited.connect(
             partial(
@@ -132,10 +147,3 @@ class ApplicationWindow(QMainWindow):
                 self.ui,
             )
         )
-
-        # This callback rewrites widget values with the configured unit
-        ui_attr = dir(self.ui)
-        for idx, attr in enumerate(ui_attr):
-            if isinstance(getattr(self.ui, attr), QLineEdit):
-                widget = getattr(self.ui, attr)
-                widget.editingFinished.connect(partial(self.model.format_field, widget))
