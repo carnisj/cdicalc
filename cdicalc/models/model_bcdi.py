@@ -190,9 +190,9 @@ class Model_BCDI(Model):
             )
             self.update_text(widget=widget, ui=ui, value=angular_sampling)
 
-    def update_crystal_size(self, ui: Ui_main_window) -> None:
+    def _update_crystal_size(self, ui: Ui_main_window) -> None:
         if self.verbose:
-            print("  -> update_crystal_size")
+            print("  -> _update_crystal_size")
         widget = ui.crystal_size
         if self._dq is not None:
             crystal_size = (2 * pi / self._dq).to("nm")
@@ -236,9 +236,9 @@ class Model_BCDI(Model):
             self._d2theta = units.Quantity(
                 fringe_spacing * detector_pixelsize / detector_distance, "radian"
             )
-        self.update_dq(ui=ui)
+        self._update_dq(ui=ui)
 
-    def update_dq(self, ui: Ui_main_window, **kwargs) -> None:
+    def _update_dq(self, ui: Ui_main_window, **kwargs) -> None:
         """
         Update the value of dq.
 
@@ -249,7 +249,7 @@ class Model_BCDI(Model):
         :return:
         """
         if self.verbose:
-            print("  -> update_dq")
+            print("  -> _update_dq")
         xray_wavelength = to_quantity(
             ui.xray_wavelength.text(), field_name="xray_wavelength"
         )
@@ -257,7 +257,7 @@ class Model_BCDI(Model):
             self._dq = None
         else:
             self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
-        self.update_crystal_size(ui=ui)
+        self._update_crystal_size(ui=ui)
 
     def update_max_rocking_angle(self, ui: Ui_main_window, **kwargs) -> None:
         if self.verbose:
