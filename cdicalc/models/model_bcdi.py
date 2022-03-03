@@ -55,7 +55,7 @@ class Model:
         self,
         field_name: str,
         ui: Ui_main_window,
-        callbacks: Dict[Callable, Optional[Union[List[str], str]]],
+        callbacks: Dict[Callable, Optional[Union[List[QLineEdit], QLineEdit]]],
     ) -> None:
         """Update the slots connected to the changed signal."""
         if self.verbose:
