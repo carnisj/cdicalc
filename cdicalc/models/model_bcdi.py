@@ -6,7 +6,7 @@
 
 """Model to handle the calculations."""
 
-from math import pi, sin, asin
+import numpy as np
 from pint import Quantity
 from pint.errors import UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit, QWidget
@@ -185,9 +185,9 @@ class Model_BCDI(Model):
         ):
             widget.setText(EMPTY_MSG)
         else:
-            angular_sampling = asin(wavelength / (2 * crystal_size)) / rocking_angle.to(
-                "radian"
-            )
+            angular_sampling = np.asin(
+                wavelength / (2 * crystal_size)
+            ) / rocking_angle.to("radian")
             self.update_text(widget=widget, ui=ui, value=angular_sampling)
 
     def _update_crystal_size(self, ui: Ui_main_window) -> None:
@@ -195,7 +195,7 @@ class Model_BCDI(Model):
             print("  -> _update_crystal_size")
         widget = ui.crystal_size
         if self._dq is not None:
-            crystal_size = (2 * pi / self._dq).to("nm")
+            crystal_size = (2 * np.pi / self._dq).to("nm")
             self.update_text(widget=widget, ui=ui, value=crystal_size)
         else:
             widget.setText(EMPTY_MSG)
@@ -256,7 +256,7 @@ class Model_BCDI(Model):
         if any(val is None for val in {xray_wavelength, self._d2theta}):
             self._dq = None
         else:
-            self._dq = 4 * pi / xray_wavelength * sin(self._d2theta / 2)
+            self._dq = 4 * np.pi / xray_wavelength * np.sin(self._d2theta / 2)
         self._update_crystal_size(ui=ui)
 
     def update_max_rocking_angle(self, ui: Ui_main_window, **kwargs) -> None:
@@ -280,7 +280,7 @@ class Model_BCDI(Model):
             widget.setText(EMPTY_MSG)
         else:
             max_rocking_angle = units.Quantity(
-                asin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
+                np.asin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
             )
             self.update_text(widget=widget, ui=ui, value=max_rocking_angle)
             ui.rocking_angle.setText(EMPTY_MSG)
@@ -312,7 +312,7 @@ class Model_BCDI(Model):
             min_detector_distance = (
                 fringe_spacing
                 * detector_pixelsize
-                / (2 * asin(wavelength / (2 * crystal_size)))
+                / (2 * np.asin(wavelength / (2 * crystal_size)))
             )
             self.update_text(widget=widget, ui=ui, value=min_detector_distance)
             ui.detector_distance.setText(EMPTY_MSG)
