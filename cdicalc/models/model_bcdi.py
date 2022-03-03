@@ -7,84 +7,30 @@
 """Model to handle the calculations."""
 
 from math import pi, sin, asin
-from pint import Quantity, UnitRegistry
-from pint.errors import DimensionalityError, UndefinedUnitError
+from pint import Quantity
+from pint.errors import UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit, QWidget
 from typing import Callable, Dict, List, Optional, Union
 
 from cdicalc.gui.mainWindow import Ui_main_window
-
-default_units = {
-    "angular_sampling": ("", "~.1f", "3"),
-    "crystal_size": ("nm", "~.0f", "250 nm"),
-    "detector_distance": ("m", "~.2f", "1.5 m"),
-    "detector_pixelsize": ("um", "~.0f", "55 um"),
-    "fringe_spacing": ("", "~.1f", "5"),
-    "max_rocking_angle": ("deg", "~.4f", "0.01 deg"),
-    "min_detector_distance": ("m", "~.2f", "1.5 m"),
-    "rocking_angle": ("deg", "~.4f", "0.01 deg"),
-    "sampling_ratio": ("", "~.1f", "3"),
-    "unknown": ("", "~.2f", "unknown"),
-    "xray_energy": ("keV", "~.2f", "10 keV"),
-    "xray_wavelength": ("angstrom", "~.4f", "1.5 angstrom"),
-}
+from cdicalc.models.snippets_quantities import (
+    convert_unit,
+    default_units,
+    to_quantity,
+    planck_constant,
+    speed_of_light,
+    units,
+)
 
 EMPTY_MSG = ""
 ERROR_MSG = "ERROR"
 
-units = UnitRegistry(system="mks")
-planck_constant = units.Quantity(1, units.h).to_base_units()
-speed_of_light = units.Quantity(1, units.speed_of_light).to_base_units()
 
-
-def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Quantity]:
-    """
-    Convert the quantity to the desired unit.
-
-    If the unit is not provided, it will assume that the quantity is expressed directly
-    in the default unit.
-
-    :param quantity: a valid Quantity
-    :param default_unit: a valid unit
-    :return: the quantity converted to the default unit
-    """
-    if not isinstance(quantity, units.Quantity):
-        raise TypeError(f"quantity should be a Quantity, got {type(quantity)}")
-    if not isinstance(default_unit, str):
-        raise TypeError(f"default_unit should be a str, got {type(default_unit)}")
-    if quantity.units == units.Unit("dimensionless"):
-        return units.Quantity(quantity.m, default_unit)
-
-    try:
-        quantity = quantity.to(default_unit)
-        return quantity
-    except DimensionalityError:
-        return None
-
-
-def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
-    """
-    Try to convert the string to a Quantity using the field default parameters.
-
-    :param text:
-    :param field_name:
-    :return:
-    """
-    try:
-        value: Optional[Quantity] = units.Quantity(text)
-        return convert_unit(quantity=value, default_unit=default_units[field_name][0])
-    except (AttributeError, ValueError, UndefinedUnitError):
-        return None
-
-
-class Model_BCDI:
-    def __init__(
-        self,
-        config,
-    ):
-        self._config = config
-        self._d2theta: Optional[Quantity] = None
-        self._dq: Optional[Quantity] = None
+class Model:
+    def __init__(self, verbose=False):
+        if not isinstance(verbose, bool):
+            raise TypeError(f"verbose should be a boolean, got {type(verbose)}")
+        self.verbose = verbose
 
     @staticmethod
     def clear_widget(
@@ -104,27 +50,6 @@ class Model_BCDI:
             raise TypeError(
                 f"Expecting a widget or a list of widgets, got {type(target_widgets)}"
             )
-
-    @staticmethod
-    def format_field(widget: QLineEdit) -> None:
-        input_text = widget.text()
-        try:
-            _quantity: Optional[Quantity] = units.Quantity(input_text)
-            _quantity = convert_unit(
-                quantity=_quantity,
-                default_unit=default_units.get(widget.objectName(), "unknown")[0],
-            )
-            if _quantity is not None:
-                widget.setText(
-                    "{number:{precision}}".format(
-                        number=_quantity,
-                        precision=default_units.get(widget.objectName(), "unknown")[1],
-                    )
-                )
-        except (AttributeError, UndefinedUnitError):
-            widget.setText(ERROR_MSG)
-        except ValueError:  # the widget is empty
-            widget.setText(EMPTY_MSG)
 
     def field_changed(
         self,
@@ -168,6 +93,27 @@ class Model_BCDI:
             )
 
     @staticmethod
+    def format_field(widget: QLineEdit) -> None:
+        input_text = widget.text()
+        try:
+            _quantity: Optional[Quantity] = units.Quantity(input_text)
+            _quantity = convert_unit(
+                quantity=_quantity,
+                default_unit=default_units.get(widget.objectName(), "unknown")[0],
+            )
+            if _quantity is not None:
+                widget.setText(
+                    "{number:{precision}}".format(
+                        number=_quantity,
+                        precision=default_units.get(widget.objectName(), "unknown")[1],
+                    )
+                )
+        except (AttributeError, UndefinedUnitError):
+            widget.setText(ERROR_MSG)
+        except ValueError:  # the widget is empty
+            widget.setText(EMPTY_MSG)
+
+    @staticmethod
     def send_error(
         callbacks: Dict[Callable, Optional[Union[List[QLineEdit], QLineEdit]]],
     ) -> None:
@@ -184,6 +130,39 @@ class Model_BCDI:
                 for _, target_widget in enumerate(val):
                     if isinstance(target_widget, QLineEdit):
                         target_widget.setText(ERROR_MSG)
+
+    @staticmethod
+    def update_text(
+        widget: QLineEdit, ui: Ui_main_window, value: Union[Quantity, str]
+    ) -> None:
+
+        if isinstance(value, units.Quantity):
+            try:
+                widget.setText(
+                    "{number:{precision}}".format(
+                        number=value.to(default_units[widget.objectName()][0]),
+                        precision=default_units[widget.objectName()][1],
+                    )
+                )
+            except KeyError:
+                ui.helptext.setText(
+                    f" {widget.objectName()} not defined in default units"
+                )
+                widget.setText(str(value))
+        elif isinstance(value, str):
+            widget.setText(value)
+        else:
+            raise TypeError(
+                f"value should be a string or a Quantity, got {type(value)}"
+            )
+
+
+class Model_BCDI(Model):
+    def __init__(self, config, verbose=False):
+        super().__init__(verbose=verbose)
+        self._config = config
+        self._d2theta: Optional[Quantity] = None
+        self._dq: Optional[Quantity] = None
 
     def update_angular_sampling(self, ui: Ui_main_window, **kwargs) -> None:
         print("in update_angular_sampling")
@@ -208,6 +187,16 @@ class Model_BCDI:
                 "radian"
             )
             self.update_text(widget=widget, ui=ui, value=angular_sampling)
+
+    def update_crystal_size(self, ui: Ui_main_window) -> None:
+        print("in update_crystal_size")
+        widget = ui.crystal_size
+        if self._dq is not None:
+            crystal_size = (2 * pi / self._dq).to("nm")
+            self.update_text(widget=widget, ui=ui, value=crystal_size)
+        else:
+            widget.setText(EMPTY_MSG)
+        self.update_angular_sampling(ui=ui)
 
     def update_d2theta(self, ui: Ui_main_window, **kwargs) -> None:
         """
@@ -244,16 +233,6 @@ class Model_BCDI:
                 fringe_spacing * detector_pixelsize / detector_distance, "radian"
             )
         self.update_dq(ui=ui)
-
-    def update_crystal_size(self, ui: Ui_main_window) -> None:
-        print("in update_crystal_size")
-        widget = ui.crystal_size
-        if self._dq is not None:
-            crystal_size = (2 * pi / self._dq).to("nm")
-            self.update_text(widget=widget, ui=ui, value=crystal_size)
-        else:
-            widget.setText(EMPTY_MSG)
-        self.update_angular_sampling(ui=ui)
 
     def update_dq(self, ui: Ui_main_window, **kwargs) -> None:
         """
@@ -330,31 +309,6 @@ class Model_BCDI:
             )
             self.update_text(widget=widget, ui=ui, value=min_detector_distance)
             ui.detector_distance.setText(EMPTY_MSG)
-
-    @staticmethod
-    def update_text(
-        widget: QLineEdit, ui: Ui_main_window, value: Union[Quantity, str]
-    ) -> None:
-
-        if isinstance(value, units.Quantity):
-            try:
-                widget.setText(
-                    "{number:{precision}}".format(
-                        number=value.to(default_units[widget.objectName()][0]),
-                        precision=default_units[widget.objectName()][1],
-                    )
-                )
-            except KeyError:
-                ui.helptext.setText(
-                    f" {widget.objectName()} not defined in default units"
-                )
-                widget.setText(str(value))
-        elif isinstance(value, str):
-            widget.setText(value)
-        else:
-            raise TypeError(
-                f"value should be a string or a Quantity, got {type(value)}"
-            )
 
     def update_xrays(
         self,
