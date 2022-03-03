@@ -21,6 +21,7 @@ class ApplicationWindow(QMainWindow):
         # Set some main window's properties
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
+        self.ui.tabWidget.setCurrentIndex(0)
         self.setWindowIcon(QIcon(":/icons/diffract.png"))
         # Connect signals and slots
         self._connect_tab_bcdi()
@@ -53,8 +54,13 @@ class ApplicationWindow(QMainWindow):
         # slots for crystal_size
         self.ui.crystal_size.textEdited.connect(
             partial(
-                self.model.update_min_distance,
+                self.model.field_changed,
+                self.ui.crystal_size.objectName(),
                 self.ui,
+                {
+                    self.model.clear_widget: [self.ui.detector_distance],
+                    self.model.update_min_distance: None
+                },
             )
         )
 
@@ -75,7 +81,7 @@ class ApplicationWindow(QMainWindow):
         self.ui.detector_pixelsize.textEdited.connect(
             partial(
                 self.model.field_changed,
-                self.ui.detector_distance.objectName(),
+                self.ui.detector_pixelsize.objectName(),
                 self.ui,
                 {self.model.update_d2theta: None},
             )

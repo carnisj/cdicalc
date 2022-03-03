@@ -90,7 +90,7 @@ class Model:
     def clear_widget(
         target_widgets: Union[List[QLineEdit], QLineEdit], **kwargs
     ) -> None:
-
+        print("in clear_widget")
         if isinstance(target_widgets, QWidget):
             target_widgets = [target_widgets]
 
@@ -133,7 +133,7 @@ class Model:
         callbacks: Dict[Callable, Optional[Union[List[str], str]]],
     ) -> None:
         """Update the slots connected to the changed signal."""
-
+        print("\nfield changed:", field_name)
         if not isinstance(callbacks, dict):
             raise TypeError(
                 "callbacks should be a dict of `callback: target_widgets`"
@@ -185,6 +185,7 @@ class Model:
                     target_widget.setText(ERROR_MSG)
 
     def update_angular_sampling(self, ui: Ui_main_window, **kwargs) -> None:
+        print("in update_angular_sampling")
         widget = ui.angular_sampling
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -212,6 +213,9 @@ class Model:
         d2theta is the angle in radian between two detector pixels, the origin of the
         reference frame being at the sample position.
         """
+        print("in update_d2theta")
+        if ui.detector_distance.text() == "":
+            return
         fringe_spacing = to_quantity(
             ui.fringe_spacing.text(), field_name=ui.fringe_spacing.objectName()
         )
@@ -239,6 +243,7 @@ class Model:
         self.update_dq(ui=ui)
 
     def update_crystal_size(self, ui: Ui_main_window) -> None:
+        print("in update_crystal_size")
         widget = ui.crystal_size
         if self._dq is not None:
             crystal_size = (2 * pi / self._dq).to("nm")
@@ -256,6 +261,7 @@ class Model:
         :param ui:
         :return:
         """
+        print("in update_dq")
         xray_wavelength = to_quantity(
             ui.xray_wavelength.text(), field_name="xray_wavelength"
         )
@@ -266,6 +272,7 @@ class Model:
         self.update_crystal_size(ui=ui)
 
     def update_max_rocking_angle(self, ui: Ui_main_window, **kwargs) -> None:
+        print("in update_max_rocking_angle")
         widget = ui.max_rocking_angle
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -288,6 +295,9 @@ class Model:
             ui.rocking_angle.setText(EMPTY_MSG)
 
     def update_min_distance(self, ui: Ui_main_window, **kwargs) -> None:
+        print("in update_min_distance")
+        if ui.detector_distance.text() != "":
+            return
         widget = ui.min_detector_distance
         fringe_spacing = to_quantity(
             ui.fringe_spacing.text(), field_name=ui.fringe_spacing.objectName()
@@ -353,6 +363,7 @@ class Model:
 
         The target field can be the X-ray energy or the X-ray wavelength.
         """
+        print("in update_xrays")
         if target_widgets is None:
             raise ValueError(
                 "target_widgets should be a widget or a list of widgets, not None"
