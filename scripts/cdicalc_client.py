@@ -11,7 +11,7 @@ import sys
 import yaml
 
 from cdicalc.gui import gui
-from cdicalc.model.model import Model
+from cdicalc.models.model_bcdi import Model_BCDI
 
 
 def main():
@@ -36,11 +36,11 @@ def main():
     else:
         config = None
 
-    # Create an instance of the model
-    model = Model(config=config)
+    # Create an instance of the models
+    model_bcdi = Model_BCDI(config=config)
 
     # Show the calculator's GUI
-    view = gui.ApplicationWindow(model=model)
+    view = gui.ApplicationWindow(model_bcdi=model_bcdi)
     view.show()
 
     # Execute calculator's main loop

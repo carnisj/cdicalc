@@ -40,7 +40,7 @@ color: rgb(255, 255, 255);</string>
          <string notr="true">background-color: rgb(197, 243, 242);</string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="bcdi">
          <attribute name="title">
@@ -383,6 +383,11 @@ color: rgb(255, 255, 255);</string>
         <widget class="QWidget" name="diffraction">
          <attribute name="title">
           <string>Diffraction calculations</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Coherence calculations</string>
          </attribute>
         </widget>
        </widget>

@@ -77,7 +77,7 @@ def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
         return None
 
 
-class Model:
+class Model_BCDI:
     def __init__(
         self,
         config,
@@ -169,7 +169,7 @@ class Model:
 
     @staticmethod
     def send_error(
-        callbacks: Dict[Callable, Optional[Union[List[str], str]]],
+        callbacks: Dict[Callable, Optional[Union[List[QLineEdit], QLineEdit]]],
     ) -> None:
         """
         Update all target widgets with the error message
@@ -179,13 +179,16 @@ class Model:
         """
         for _, (_, val) in enumerate(callbacks.items()):
             if val is not None:
-                if isinstance(val, str):
+                if isinstance(val, QWidget):
                     val = [val]
                 for _, target_widget in enumerate(val):
-                    target_widget.setText(ERROR_MSG)
+                    if isinstance(target_widget, QLineEdit):
+                        target_widget.setText(ERROR_MSG)
 
     def update_angular_sampling(self, ui: Ui_main_window, **kwargs) -> None:
         print("in update_angular_sampling")
+        if ui.rocking_angle.text() == "":
+            return
         widget = ui.angular_sampling
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -250,6 +253,7 @@ class Model:
             self.update_text(widget=widget, ui=ui, value=crystal_size)
         else:
             widget.setText(EMPTY_MSG)
+        self.update_angular_sampling(ui=ui)
 
     def update_dq(self, ui: Ui_main_window, **kwargs) -> None:
         """
@@ -273,6 +277,8 @@ class Model:
 
     def update_max_rocking_angle(self, ui: Ui_main_window, **kwargs) -> None:
         print("in update_max_rocking_angle")
+        if ui.rocking_angle.text() != "":
+            return
         widget = ui.max_rocking_angle
         crystal_size = to_quantity(
             ui.crystal_size.text(), field_name=ui.crystal_size.objectName()
@@ -312,9 +318,8 @@ class Model:
             ui.xray_wavelength.text(), field_name=ui.xray_wavelength.objectName()
         )
         if any(
-            val is None for val in {
-                fringe_spacing, detector_pixelsize, crystal_size, wavelength
-            }
+            val is None
+            for val in {fringe_spacing, detector_pixelsize, crystal_size, wavelength}
         ):
             widget.setText(EMPTY_MSG)
         else:
