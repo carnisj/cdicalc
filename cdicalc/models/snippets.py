@@ -6,9 +6,13 @@
 
 """Utilities to define default units and manipulate quantities."""
 
+from dataclasses import dataclass
 from pint import Quantity, UnitRegistry
 from pint.errors import DimensionalityError, UndefinedUnitError
-from typing import Optional
+from PyQt5.QtWidgets import QLineEdit
+from typing import List, Optional, Union
+
+from cdicalc.gui.mainWindow import Ui_main_window
 
 units = UnitRegistry(system="mks")
 planck_constant = units.Quantity(1, units.h).to_base_units()
@@ -28,6 +32,13 @@ default_units = {
     "xray_energy": ("keV", "~.2f", "10 keV"),
     "xray_wavelength": ("angstrom", "~.4f", "1.5 angstrom"),
 }
+
+
+@dataclass
+class Callback_params:
+    ui: Ui_main_window
+    value: Optional[Quantity] = None
+    target_widgets: Optional[Union[List[QLineEdit], QLineEdit]] = None
 
 
 def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Quantity]:

@@ -7,8 +7,10 @@
 from functools import partial
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
+
 from cdicalc.gui.mainWindow import Ui_main_window
 from cdicalc.resources import resources_cdicalc
+from cdicalc.models.snippets import Callback_params
 
 
 class ApplicationWindow(QMainWindow):
@@ -151,24 +153,24 @@ class ApplicationWindow(QMainWindow):
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_d2theta,
-                self.ui,
+                Callback_params(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_min_distance,
-                self.ui,
+                Callback_params(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_angular_sampling,
-                self.ui,
+                Callback_params(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_max_rocking_angle,
-                self.ui,
+                Callback_params(self.ui),
             )
         )
