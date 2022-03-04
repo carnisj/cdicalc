@@ -12,7 +12,7 @@ from pint.errors import UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit, QWidget
 from typing import Callable, Dict, List, Optional, Union
 
-from cdicalc.gui.mainWindow import Ui_main_window
+from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.models.snippets import (
     CallbackParams,
     convert_unit,

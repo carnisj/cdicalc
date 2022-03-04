@@ -124,7 +124,9 @@ def task_clean_coverage():
 def task_docstrings():
     """Run pydocstyle on the modules."""
     return {
-        "actions": ["pydocstyle cdicalc --ignore=D102,D107,D212,D203"],
+        "actions": [
+            'pydocstyle --match="(?!test_|mainWindow|resources).*\.py" --ignore=D102,D107,D212,D203 cdicalc'
+        ],
         "verbosity": 2,
     }
 

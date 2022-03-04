@@ -11,9 +11,8 @@ from functools import partial
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
 
-from cdicalc.gui.mainWindow import Ui_main_window
+from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.models.snippets import CallbackParams
-from cdicalc.resources import resources_cdicalc  # pylint: disable=unused-import
 
 
 class ApplicationWindow(QMainWindow):
@@ -39,7 +38,6 @@ class ApplicationWindow(QMainWindow):
         The callback rewrites widget values with the configured unit, using
         str(Quantity).
         """
-
         ui_attr = dir(self.ui)
         for _, attr in enumerate(ui_attr):
             if isinstance(getattr(self.ui, attr), QLineEdit):

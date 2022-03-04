@@ -9,4 +9,4 @@ recursive-include doc *.rst
 include doc/conf.py
 include doc/make.bat
 include doc/Makefile
-include cdicalc/gui/mainWindow.ui
+include cdicalc/resources/mainWindow.ui

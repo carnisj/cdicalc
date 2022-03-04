@@ -12,7 +12,7 @@ from pint.errors import DimensionalityError, UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit
 from typing import List, Optional, Union
 
-from cdicalc.gui.mainWindow import Ui_main_window
+from cdicalc.resources.mainWindow import Ui_main_window
 
 units = UnitRegistry(system="mks")
 planck_constant = units.Quantity(1, units.h).to_base_units()
