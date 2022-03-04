@@ -41,7 +41,7 @@ def main():
         config = None
 
     # Create an instance of the models
-    model_bcdi = Model_BCDI(config=config)
+    model_bcdi = Model_BCDI(config=config, verbose=True)
 
     # Show the calculator's GUI
     view = gui.ApplicationWindow(model_bcdi=model_bcdi)
