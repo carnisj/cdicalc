@@ -5,6 +5,7 @@
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
 from functools import partial
+
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
 

@@ -209,9 +209,14 @@ class Model_BCDI(Model):
             params.ui.xray_wavelength.text(),
             field_name=params.ui.xray_wavelength.objectName(),
         )
-        if any(val is None for val in {crystal_size, rocking_angle, wavelength}) or (
-            rocking_angle == 0
+
+        if (
+            crystal_size is None
+            or rocking_angle is None
+            or wavelength is None
+            or rocking_angle == 0
         ):
+            # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
         else:
             angular_sampling = np.arcsin(
@@ -277,10 +282,12 @@ class Model_BCDI(Model):
             field_name=params.ui.min_detector_distance.objectName(),
         )
 
-        if any(
-            val is None
-            for val in {fringe_spacing, detector_pixelsize, detector_distance}
+        if (
+            fringe_spacing is None
+            or detector_distance is None
+            or detector_pixelsize is None
         ):
+            # not beautiful but mypy does not understand any()
             self._d2theta = None
         else:
             self._d2theta = units.Quantity(
@@ -303,7 +310,9 @@ class Model_BCDI(Model):
         xray_wavelength = to_quantity(
             ui.xray_wavelength.text(), field_name="xray_wavelength"
         )
-        if any(val is None for val in {xray_wavelength, self._d2theta}):
+
+        if self._d2theta is None or xray_wavelength is None:
+            # not beautiful but mypy does not understand any()
             self._dq = None
         else:
             self._dq = 4 * np.pi / xray_wavelength * np.sin(self._d2theta / 2)
@@ -332,9 +341,14 @@ class Model_BCDI(Model):
             params.ui.xray_wavelength.text(),
             field_name=params.ui.xray_wavelength.objectName(),
         )
-        if any(val is None for val in {crystal_size, angular_sampling, wavelength}) or (
-            angular_sampling == 0
+
+        if (
+            angular_sampling is None
+            or crystal_size is None
+            or wavelength is None
+            or angular_sampling == 0
         ):
+            # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
         else:
             max_rocking_angle: Quantity = units.Quantity(
@@ -376,10 +390,14 @@ class Model_BCDI(Model):
             params.ui.xray_wavelength.text(),
             field_name=params.ui.xray_wavelength.objectName(),
         )
-        if any(
-            val is None
-            for val in {fringe_spacing, detector_pixelsize, crystal_size, wavelength}
+
+        if (
+            crystal_size is None
+            or detector_pixelsize is None
+            or fringe_spacing is None
+            or wavelength is None
         ):
+            # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
         else:
             min_detector_distance = (
