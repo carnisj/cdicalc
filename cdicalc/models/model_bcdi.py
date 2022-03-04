@@ -85,19 +85,21 @@ class Model:
                     f"e.g. {default_units[field_name][2]}"
                 )
             else:
-                for _, callback in enumerate(callbacks):
-                    callback(
-                        CallbackParams(
-                            value=value,
-                            target_widgets=callbacks[callback],
-                            ui=ui,
-                        )
-                    )
                 ui.helptext.setText(EMPTY_MSG)
         except (AttributeError, ValueError, UndefinedUnitError):
+            value = None
             self.send_error(callbacks=callbacks)
             ui.helptext.setText(
                 f" enter a valid {field_name}: " f"e.g. {default_units[field_name][2]}"
+            )
+
+        for _, callback in enumerate(callbacks):
+            callback(
+                CallbackParams(
+                    value=value,
+                    target_widgets=callbacks[callback],
+                    ui=ui,
+                )
             )
 
     @staticmethod
@@ -363,6 +365,7 @@ class Model_BCDI(Model):
                 f"got {type(params)}"
             )
         if params.ui.rocking_angle.text() != "":
+            params.ui.max_rocking_angle.setText(EMPTY_MSG)
             return
         widget = params.ui.max_rocking_angle
         crystal_size = to_quantity(
@@ -382,7 +385,7 @@ class Model_BCDI(Model):
             # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
         elif any(val == 0 for val in {angular_sampling, crystal_size, wavelength}):
-            params.ui.rocking_angle.setText(ERROR_MSG)
+            widget.setText(ERROR_MSG)
         else:
             max_rocking_angle: Quantity = units.Quantity(
                 np.arcsin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
@@ -410,6 +413,7 @@ class Model_BCDI(Model):
                 f"got {type(params)}"
             )
         if params.ui.detector_distance.text() != "":
+            params.ui.min_detector_distance.setText(EMPTY_MSG)
             return
         widget = params.ui.min_detector_distance
         fringe_spacing = to_quantity(
@@ -428,7 +432,6 @@ class Model_BCDI(Model):
             params.ui.xray_wavelength.text(),
             field_name=params.ui.xray_wavelength.objectName(),
         )
-
         if (
             crystal_size is None
             or detector_pixelsize is None
@@ -441,7 +444,7 @@ class Model_BCDI(Model):
             val == 0
             for val in {crystal_size, detector_pixelsize, fringe_spacing, wavelength}
         ):
-            params.ui.detector_distance.setText(ERROR_MSG)
+            widget.setText(ERROR_MSG)
         else:
             min_detector_distance = (
                 fringe_spacing
@@ -488,9 +491,7 @@ class Model_BCDI(Model):
                 f"Invalid type for target_widgets: {type(params.target_widgets)}"
             )
 
-        if params.value is None:
-            target_widget.setText(EMPTY_MSG)
-        elif params.value == 0:
+        if params.value is None or params.value == 0:
             target_widget.setText(ERROR_MSG)
         else:
             new_value = (

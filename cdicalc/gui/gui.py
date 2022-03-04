@@ -86,7 +86,7 @@ class ApplicationWindow(QMainWindow):
                 self.ui,
                 {
                     self.model_bcdi.update_d2theta: None,
-                    self.model_bcdi.clear_widget: [self.ui.min_detector_distance],
+                    self.model_bcdi.update_min_distance: None,
                 },
             )
         )
@@ -124,8 +124,8 @@ class ApplicationWindow(QMainWindow):
                 self.ui.rocking_angle.objectName(),
                 self.ui,
                 {
-                    self.model_bcdi.clear_widget: [self.ui.max_rocking_angle],
                     self.model_bcdi.update_angular_sampling: None,
+                    self.model_bcdi.update_max_rocking_angle: None
                 },
             )
         )
