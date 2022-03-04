@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # CDICALC: calculator for coherent X-ray diffraction imaging experiments
 #       authors:
@@ -12,7 +11,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
 
 from cdicalc.resources.mainWindow import Ui_main_window
-from cdicalc.models.snippets import CallbackParams
+from cdicalc.utils.snippets_quantities import CallbackParams
 
 
 class ApplicationWindow(QMainWindow):
