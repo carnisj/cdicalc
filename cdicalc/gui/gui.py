@@ -125,7 +125,7 @@ class ApplicationWindow(QMainWindow):
                 self.ui,
                 {
                     self.model_bcdi.update_angular_sampling: None,
-                    self.model_bcdi.update_max_rocking_angle: None
+                    self.model_bcdi.update_max_rocking_angle: None,
                 },
             )
         )

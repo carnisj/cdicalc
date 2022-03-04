@@ -137,13 +137,15 @@ class Model:
 
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
-        for _, (_, val) in enumerate(callbacks.items()):
-            if val is not None:
-                if isinstance(val, QWidget):
-                    val = [val]
-                for _, target_widget in enumerate(val):
-                    if isinstance(target_widget, QLineEdit):
-                        target_widget.setText(ERROR_MSG)
+        if not isinstance(callbacks, dict):
+            raise TypeError(f"callbacks should be a dictionary, got {type(callbacks)}")
+        for _, target_widgets in callbacks.items():
+            if target_widgets is not None:
+                if isinstance(target_widgets, QWidget):
+                    target_widgets = [target_widgets]
+                for _, widget in enumerate(target_widgets):
+                    if isinstance(widget, QWidget) and hasattr(widget, "setText"):
+                        widget.setText(ERROR_MSG)
 
     @staticmethod
     def update_text(params: CallbackParams) -> None:
