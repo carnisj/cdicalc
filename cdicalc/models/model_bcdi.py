@@ -242,7 +242,7 @@ class Model_BCDI(Model):
         if crystal_size is None or rocking_angle is None or wavelength is None:
             # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
-        elif any(val == 0 for val in {crystal_size, rocking_angle, wavelength}):
+        elif any(val == 0 for val in [crystal_size, rocking_angle, wavelength]):
             widget.setText(ERROR_MSG)
         else:
             angular_sampling = np.arcsin(
@@ -386,7 +386,7 @@ class Model_BCDI(Model):
         if angular_sampling is None or crystal_size is None or wavelength is None:
             # not beautiful but mypy does not understand any()
             widget.setText(EMPTY_MSG)
-        elif any(val == 0 for val in {angular_sampling, crystal_size, wavelength}):
+        elif any(val == 0 for val in [angular_sampling, crystal_size, wavelength]):
             widget.setText(ERROR_MSG)
         else:
             max_rocking_angle: Quantity = units.Quantity(
@@ -444,7 +444,7 @@ class Model_BCDI(Model):
             widget.setText(EMPTY_MSG)
         elif any(
             val == 0
-            for val in {crystal_size, detector_pixelsize, fringe_spacing, wavelength}
+            for val in [crystal_size, detector_pixelsize, fringe_spacing, wavelength]
         ):
             widget.setText(ERROR_MSG)
         else:
