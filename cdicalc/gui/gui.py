@@ -4,14 +4,16 @@
 #       authors:
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
+"""Create the GUI and connect signals to slots."""
+
 from functools import partial
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit, QMainWindow
 
 from cdicalc.gui.mainWindow import Ui_main_window
-from cdicalc.resources import resources_cdicalc
-from cdicalc.models.snippets import Callback_params
+from cdicalc.models.snippets import CallbackParams
+from cdicalc.resources import resources_cdicalc  # pylint: disable=unused-import
 
 
 class ApplicationWindow(QMainWindow):
@@ -39,7 +41,7 @@ class ApplicationWindow(QMainWindow):
         """
 
         ui_attr = dir(self.ui)
-        for idx, attr in enumerate(ui_attr):
+        for _, attr in enumerate(ui_attr):
             if isinstance(getattr(self.ui, attr), QLineEdit):
                 widget = getattr(self.ui, attr)
                 widget.editingFinished.connect(
@@ -154,24 +156,24 @@ class ApplicationWindow(QMainWindow):
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_d2theta,
-                Callback_params(self.ui),
+                CallbackParams(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_min_distance,
-                Callback_params(self.ui),
+                CallbackParams(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_angular_sampling,
-                Callback_params(self.ui),
+                CallbackParams(self.ui),
             )
         )
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_max_rocking_angle,
-                Callback_params(self.ui),
+                CallbackParams(self.ui),
             )
         )

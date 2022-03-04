@@ -61,7 +61,7 @@ confidence=
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
 disable=invalid-name
-  too-many-branches
+  ,too-many-branches
   ,too-many-arguments
   ,too-few-public-methods
   ,too-many-locals
@@ -75,7 +75,16 @@ disable=invalid-name
   ,raise-missing-from
   ,deprecated-typing-alias
   ,too-many-ancestors
-  ,redundant-u-string-prefix,unused-wildcard-import,consider-using-f-string,redefined-builtin,wildcard-import,wrong-import-order,no-self-use,no-else-return,no-else-break,protected-access,no-else-raise
+  ,redundant-u-string-prefix
+  ,unused-wildcard-import
+  ,consider-using-f-string
+  ,redefined-builtin
+  ,wrong-import-order
+  ,no-self-use
+  ,no-else-return
+  ,no-else-break
+  ,protected-access
+  ,no-else-raise
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

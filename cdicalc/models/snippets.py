@@ -35,7 +35,9 @@ default_units = {
 
 
 @dataclass
-class Callback_params:
+class CallbackParams:
+    """Utility class to store callback parameters."""
+
     ui: Ui_main_window
     value: Optional[Quantity] = None
     target_widgets: Optional[Union[List[QLineEdit], QLineEdit]] = None

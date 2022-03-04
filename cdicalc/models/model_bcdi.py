@@ -14,7 +14,7 @@ from typing import Callable, Dict, List, Optional, Union
 
 from cdicalc.gui.mainWindow import Ui_main_window
 from cdicalc.models.snippets import (
-    Callback_params,
+    CallbackParams,
     convert_unit,
     default_units,
     to_quantity,
@@ -28,33 +28,27 @@ ERROR_MSG = "ERROR"
 
 
 class Model:
+    """
+    Base class gathering common methods for interacting with widgets.
+
+    :param verbose: True to have more logging output.
+    """
+
     def __init__(self, verbose=False):
         if not isinstance(verbose, bool):
             raise TypeError(f"verbose should be a boolean, got {type(verbose)}")
         self.verbose = verbose
 
-    def clear_widget(self, params: Callback_params) -> None:
+    def clear_widget(self, params: CallbackParams) -> None:
+        """
+        Clear the text of the target widgets.
+
+        :param params: an instance of CallbackParams
+        """
         if self.verbose:
             print("  -> clear_widget")
-        if not isinstance(params, Callback_params):
-            raise TypeError(
-                "params should be an instance of type Callback_params, "
-                f"got {type(params)}"
-            )
-        if params.target_widgets is None:
-            return
-        if isinstance(params.target_widgets, QWidget):
-            params.target_widgets = [params.target_widgets]
-        if not isinstance(params.target_widgets, list):
-            raise TypeError(
-                "Expecting a widget or a list of widgets, got "
-                f"{type(params.target_widgets)}"
-            )
-        for _, widget in enumerate(params.target_widgets):
-            if isinstance(widget, QWidget) and hasattr(widget, "setText"):
-                widget.setText(EMPTY_MSG)
-            else:
-                raise TypeError(f"Expecting a QLineEdit, got {type(widget)}")
+        params.value = None
+        self.update_text(params)
 
     def field_changed(
         self,
@@ -62,7 +56,13 @@ class Model:
         ui: Ui_main_window,
         callbacks: Dict[Callable, Optional[Union[List[QLineEdit], QLineEdit]]],
     ) -> None:
-        """Update the slots connected to the changed signal."""
+        """
+        Update the slots connected to the modified signal.
+
+        :param field_name: name of the field which was modified
+        :param ui: a pointer to the main window
+        :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
+        """
         if self.verbose:
             print("\nfield changed:", field_name)
         if not isinstance(callbacks, dict):
@@ -87,7 +87,7 @@ class Model:
             else:
                 for _, callback in enumerate(callbacks):
                     callback(
-                        Callback_params(
+                        CallbackParams(
                             value=value,
                             target_widgets=callbacks[callback],
                             ui=ui,
@@ -102,6 +102,11 @@ class Model:
 
     @staticmethod
     def format_field(widget: QLineEdit) -> None:
+        """
+        Edit the widget string using the defined unit and format.
+
+        :param widget: the widget to be formatted
+        """
         input_text = widget.text()
         try:
             _quantity: Optional[Quantity] = units.Quantity(input_text)
@@ -126,10 +131,9 @@ class Model:
         callbacks: Dict[Callable, Optional[Union[List[QLineEdit], QLineEdit]]],
     ) -> None:
         """
-        Update all target widgets with the error message
+        Update all target widgets with the error message.
 
-        :param callbacks:
-        :return:
+        :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
         for _, (_, val) in enumerate(callbacks.items()):
             if val is not None:
@@ -140,12 +144,19 @@ class Model:
                         target_widget.setText(ERROR_MSG)
 
     @staticmethod
-    def update_text(params: Callback_params) -> None:
-        if not isinstance(params, Callback_params):
+    def update_text(params: CallbackParams) -> None:
+        """
+        Update the text of the target widgets with the new value.
+
+        :param params: an instance of CallbackParams
+        """
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+        if params.target_widgets is None:
+            return
         if isinstance(params.target_widgets, QWidget):
             params.target_widgets = [params.target_widgets]
         if not isinstance(params.target_widgets, list):
@@ -156,40 +167,54 @@ class Model:
 
         if isinstance(params.value, units.Quantity):
             for _, widget in enumerate(params.target_widgets):
-                try:
-                    widget.setText(
-                        "{number:{precision}}".format(
-                            number=params.value.to(
-                                default_units[widget.objectName()][0]
-                            ),
-                            precision=default_units[widget.objectName()][1],
+                if isinstance(widget, QWidget) and hasattr(widget, "setText"):
+                    try:
+                        widget.setText(
+                            "{number:{precision}}".format(
+                                number=params.value.to(
+                                    default_units[widget.objectName()][0]
+                                ),
+                                precision=default_units[widget.objectName()][1],
+                            )
                         )
-                    )
-                except KeyError:
-                    params.ui.helptext.setText(
-                        f" {widget.objectName()} not defined in default units"
-                    )
-                    widget.setText(str(params.value))
+                    except KeyError:
+                        params.ui.helptext.setText(
+                            f" {widget.objectName()} not defined in default units"
+                        )
+                        widget.setText(str(params.value))
         elif isinstance(params.value, str):
             for _, widget in enumerate(params.target_widgets):
-                widget.setText(params.value)
-        else:
-            raise TypeError(
-                f"value should be a string or a Quantity, got {type(params.value)}"
-            )
+                if isinstance(widget, QWidget) and hasattr(widget, "setText"):
+                    widget.setText(params.value)
+        else:  # None
+            for _, widget in enumerate(params.target_widgets):
+                if isinstance(widget, QWidget) and hasattr(widget, "setText"):
+                    widget.setText(EMPTY_MSG)
 
 
 class Model_BCDI(Model):
+    """
+    Specific class gathering the methods for the calculations in the BCDI tab.
+
+    :param config:
+    :param verbose: True to have more logging output.
+    """
+
     def __init__(self, config, verbose=False):
         super().__init__(verbose=verbose)
         self._config = config
         self._d2theta: Optional[Quantity] = None
         self._dq: Optional[Quantity] = None
 
-    def update_angular_sampling(self, params: Callback_params) -> None:
+    def update_angular_sampling(self, params: CallbackParams) -> None:
+        """
+        Update the angular sampling widget.
+
+        :param params: an instance of CallbackParams
+        """
         if self.verbose:
             print("  -> update_angular_sampling")
-        if not isinstance(params, Callback_params):
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
@@ -223,7 +248,7 @@ class Model_BCDI(Model):
                 wavelength / (2 * crystal_size)
             ) / rocking_angle.to("radian")
             self.update_text(
-                Callback_params(
+                CallbackParams(
                     value=angular_sampling,
                     target_widgets=widget,
                     ui=params.ui,
@@ -231,13 +256,18 @@ class Model_BCDI(Model):
             )
 
     def _update_crystal_size(self, ui: Ui_main_window) -> None:
+        """
+        Update the crystal size widget.
+
+        :param ui: a pointer to the main window
+        """
         if self.verbose:
             print("  -> _update_crystal_size")
         widget = ui.crystal_size
         if self._dq is not None:
             crystal_size = (2 * np.pi / self._dq).to("nm")
             self.update_text(
-                Callback_params(
+                CallbackParams(
                     value=crystal_size,
                     target_widgets=widget,
                     ui=ui,
@@ -246,18 +276,20 @@ class Model_BCDI(Model):
         else:
             widget.setText(EMPTY_MSG)
 
-        self.update_angular_sampling(Callback_params(ui=ui))
+        self.update_angular_sampling(CallbackParams(ui=ui))
 
-    def update_d2theta(self, params: Callback_params) -> None:
+    def update_d2theta(self, params: CallbackParams) -> None:
         """
         Update the value of d2theta.
 
         d2theta is the angle in radian between two detector pixels, the origin of the
         reference frame being at the sample position.
+
+        :param params: an instance of CallbackParams
         """
         if self.verbose:
             print("  -> update_d2theta")
-        if not isinstance(params, Callback_params):
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
@@ -302,8 +334,7 @@ class Model_BCDI(Model):
         dq is the difference in diffusion vector between two detector pixels, the origin
         of the reference frame being at the sample position.
 
-        :param ui:
-        :return:
+        :param ui: a pointer to the main window
         """
         if self.verbose:
             print("  -> _update_dq")
@@ -318,10 +349,15 @@ class Model_BCDI(Model):
             self._dq = 4 * np.pi / xray_wavelength * np.sin(self._d2theta / 2)
         self._update_crystal_size(ui=ui)
 
-    def update_max_rocking_angle(self, params: Callback_params) -> None:
+    def update_max_rocking_angle(self, params: CallbackParams) -> None:
+        """
+        Update the max_rocking_angle widget.
+
+        :param params: an instance of CallbackParams
+        """
         if self.verbose:
             print("  -> update_max_rocking_angle")
-        if not isinstance(params, Callback_params):
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
@@ -355,7 +391,7 @@ class Model_BCDI(Model):
                 np.arcsin(wavelength / (2 * crystal_size)) / angular_sampling, "radian"
             )
             self.update_text(
-                Callback_params(
+                CallbackParams(
                     value=max_rocking_angle,
                     target_widgets=widget,
                     ui=params.ui,
@@ -363,10 +399,15 @@ class Model_BCDI(Model):
             )
             params.ui.rocking_angle.setText(EMPTY_MSG)
 
-    def update_min_distance(self, params: Callback_params) -> None:
+    def update_min_distance(self, params: CallbackParams) -> None:
+        """
+        Update the min_distance widget.
+
+        :param params: an instance of CallbackParams
+        """
         if self.verbose:
             print("  -> update_min_distance")
-        if not isinstance(params, Callback_params):
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
@@ -406,7 +447,7 @@ class Model_BCDI(Model):
                 / (2 * np.arcsin(wavelength / (2 * crystal_size)))
             )
             self.update_text(
-                Callback_params(
+                CallbackParams(
                     value=min_detector_distance,
                     target_widgets=widget,
                     ui=params.ui,
@@ -414,15 +455,17 @@ class Model_BCDI(Model):
             )
             params.ui.detector_distance.setText(EMPTY_MSG)
 
-    def update_xrays(self, params: Callback_params) -> None:
+    def update_xrays(self, params: CallbackParams) -> None:
         """
-        Update the X-ray parameters.
+        Update the X-ray related widgets..
 
         The target field can be the X-ray energy or the X-ray wavelength.
+
+        :param params: an instance of CallbackParams
         """
         if self.verbose:
             print("  -> update_xrays")
-        if not isinstance(params, Callback_params):
+        if not isinstance(params, CallbackParams):
             raise TypeError(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
@@ -451,7 +494,7 @@ class Model_BCDI(Model):
             ).to_base_units()
 
             self.update_text(
-                Callback_params(
+                CallbackParams(
                     value=new_value,
                     target_widgets=target_widget,
                     ui=params.ui,

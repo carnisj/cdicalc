@@ -24,7 +24,11 @@ def main():
         help="Path to the YAML configuration file",
         default="./conf.yml",
     )
+    parser.add_argument(
+        "-v", "--verbose", help="True for more logging output", default="False"
+    )
     args = parser.parse_args()
+    # FIXME: parse args
 
     # Create an instance of QApplication
     app = QApplication(sys.argv)
@@ -37,7 +41,7 @@ def main():
         config = None
 
     # Create an instance of the models
-    model_bcdi = Model_BCDI(config=config, verbose=True)
+    model_bcdi = Model_BCDI(config=config)
 
     # Show the calculator's GUI
     view = gui.ApplicationWindow(model_bcdi=model_bcdi)

@@ -71,7 +71,9 @@ def task_clean_dist():
 def task_code_style():
     """Run pylint."""
     return {
-        "actions": ["pylint --rcfile .pylintrc cdicalc"],
+        "actions": [
+            "pylint --rcfile .pylintrc --ignore resources_cdicalc.py,mainWindow.py cdicalc"
+        ],
         "verbosity": 2,
     }
 
