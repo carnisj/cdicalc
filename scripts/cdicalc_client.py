@@ -12,6 +12,7 @@ import yaml
 
 from cdicalc.gui import gui
 from cdicalc.models.model_bcdi import Model_BCDI
+from cdicalc.models.model_coherence import Model_Coherence
 from cdicalc.utils.parser import add_cli_parameters, check_args
 
 
@@ -35,9 +36,10 @@ def main():
 
     # Create an instance of the models
     model_bcdi = Model_BCDI(config=config, verbose=cli_args.get("verbose"))
+    model_coherence = Model_Coherence(config=config, verbose=cli_args.get("verbose"))
 
     # Show the calculator's GUI
-    view = gui.ApplicationWindow(model_bcdi=model_bcdi)
+    view = gui.ApplicationWindow(model_bcdi=model_bcdi, model_coherence=model_coherence)
     view.show()
 
     # Execute calculator's main loop

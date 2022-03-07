@@ -17,10 +17,11 @@ from cdicalc.utils.snippets_quantities import CallbackParams
 class ApplicationWindow(QMainWindow):
     """Definition of the graphical user interface."""
 
-    def __init__(self, model_bcdi):
+    def __init__(self, model_bcdi, model_coherence):
         """View initializer."""
         super().__init__()
         self.model_bcdi = model_bcdi
+        self.model_coherence = model_coherence
         # Set some main window's properties
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
@@ -28,6 +29,7 @@ class ApplicationWindow(QMainWindow):
         self.setWindowIcon(QIcon(":/icons/diffract.png"))
         # Connect signals and slots
         self._connect_tab_bcdi()
+        self._connect_tab_coherence()
         self._connect_QLineEdits()
 
     def _connect_QLineEdits(self) -> None:
@@ -44,6 +46,57 @@ class ApplicationWindow(QMainWindow):
                 widget.editingFinished.connect(
                     partial(self.model_bcdi.format_field, widget)
                 )
+
+    def _connect_tab_coherence(self) -> None:
+        """Connect signals to slots for the tab on secondary source calculations."""
+        # slots for primary_source_distance
+        self.ui.primary_source_distance.textEdited.connect(
+            partial(
+                self.model_coherence.field_changed,
+                self.ui.primary_source_distance.objectName(),
+                self.ui,
+                {
+                    self.model_coherence.update_horizontal_divergence: None,
+                    self.model_coherence.update_vertical_divergence: None,
+                },
+            )
+        )
+
+        # slots for horizontal_source_size
+        self.ui.horizontal_source_size.textEdited.connect(
+            partial(
+                self.model_coherence.field_changed,
+                self.ui.horizontal_source_size.objectName(),
+                self.ui,
+                {
+                    self.model_coherence.update_horizontal_divergence: None,
+                },
+            )
+        )
+
+        # slots for vertical_source_size
+        self.ui.vertical_source_size.textEdited.connect(
+            partial(
+                self.model_coherence.field_changed,
+                self.ui.vertical_source_size.objectName(),
+                self.ui,
+                {
+                    self.model_coherence.update_vertical_divergence: None,
+                },
+            )
+        )
+
+        # slots for secondary source distance
+        self.ui.secondary_source_distance.textEdited.connect(
+            partial(
+                self.model_coherence.field_changed,
+                self.ui.secondary_source_distance.objectName(),
+                self.ui,
+                {
+                    self.model_coherence.secondary_slits_opening: None,
+                },
+            )
+        )
 
     def _connect_tab_bcdi(self) -> None:
         """Connect signals to slots for the tab on BCDI calculations."""
@@ -171,6 +224,12 @@ class ApplicationWindow(QMainWindow):
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_bcdi.update_max_rocking_angle,
+                CallbackParams(self.ui),
+            )
+        )
+        self.ui.xray_wavelength.textChanged.connect(
+            partial(
+                self.model_coherence.update_transverse_coherence,
                 CallbackParams(self.ui),
             )
         )
