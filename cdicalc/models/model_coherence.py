@@ -5,11 +5,10 @@
 
 """Model to handle the calculations in the secondary source tab."""
 
-from cdicalc.models.model import (EMPTY_MSG, ERROR_MSG, Model)
+from cdicalc.models.model import EMPTY_MSG, ERROR_MSG, Model
 from cdicalc.utils.snippets_quantities import (
     CallbackParams,
     to_quantity,
-    units,
 )
 
 
@@ -55,7 +54,7 @@ class Model_Coherence(Model):
             widget.setText(ERROR_MSG)
         else:
             horizontal_divergence = (
-                    horizontal_source_size / primary_source_distance
+                horizontal_source_size / primary_source_distance
             ).to("radian")
             self.update_text(
                 CallbackParams(
@@ -65,7 +64,6 @@ class Model_Coherence(Model):
                 )
             )
         self.update_transverse_coherence(params)
-        self.secondary_slits_opening(params)
 
     def update_vertical_divergence(self, params: CallbackParams) -> None:
         """
@@ -96,9 +94,9 @@ class Model_Coherence(Model):
         elif primary_source_distance == 0:
             widget.setText(ERROR_MSG)
         else:
-            vertical_divergence = (
-                    vertical_source_size / primary_source_distance
-            ).to("radian")
+            vertical_divergence = (vertical_source_size / primary_source_distance).to(
+                "radian"
+            )
             self.update_text(
                 CallbackParams(
                     value=vertical_divergence,
@@ -107,7 +105,6 @@ class Model_Coherence(Model):
                 )
             )
         self.update_transverse_coherence(params)
-        self.secondary_slits_opening(params)
 
     def update_transverse_coherence(self, params: CallbackParams) -> None:
         """
@@ -130,7 +127,7 @@ class Model_Coherence(Model):
         if wavelength is None:
             params.target_widgets = [
                 params.ui.horizontal_coherence_length,
-                params.ui.vertical_coherence_length
+                params.ui.vertical_coherence_length,
             ]
             self.clear_widget(params)
             return
@@ -168,80 +165,6 @@ class Model_Coherence(Model):
             self.update_text(
                 CallbackParams(
                     value=vertical_coherence,
-                    target_widgets=target_widget,
-                    ui=params.ui,
-                )
-            )
-
-        self.secondary_slits_opening(params)
-
-    def secondary_slits_opening(self, params: CallbackParams) -> None:
-        """
-        Update the secondary slit opening widget.
-
-        :param params: an instance of CallbackParams
-        """
-        if self.verbose:
-            print("  -> update_d2theta")
-        if not isinstance(params, CallbackParams):
-            raise TypeError(
-                "params should be an instance of type Callback_params, "
-                f"got {type(params)}"
-            )
-
-        secondary_source_distance = to_quantity(
-            params.ui.secondary_source_distance.text(),
-            field_name=params.ui.secondary_source_distance.objectName(),
-        )
-        wavelength = to_quantity(
-            params.ui.xray_wavelength.text(),
-            field_name=params.ui.xray_wavelength.objectName(),
-        )
-        if secondary_source_distance is None or wavelength is None:
-            params.target_widgets = [
-                params.ui.secondary_slits_horizontal,
-                params.ui.secondary_slits_vertical
-            ]
-            self.clear_widget(params)
-            return
-
-        target_widget = params.ui.secondary_slits_horizontal
-        horizontal_coherence_length = to_quantity(
-            params.ui.horizontal_coherence_length.text(),
-            field_name=params.ui.horizontal_coherence_length.objectName(),
-        )
-        if horizontal_coherence_length is None:
-            target_widget.setText(EMPTY_MSG)
-        elif horizontal_coherence_length == 0:
-            target_widget.setText(ERROR_MSG)
-        else:
-            secondary_slits_horizontal = (
-                    secondary_source_distance * wavelength / horizontal_coherence_length
-            )
-            self.update_text(
-                CallbackParams(
-                    value=secondary_slits_horizontal,
-                    target_widgets=target_widget,
-                    ui=params.ui,
-                )
-            )
-
-        target_widget = params.ui.secondary_slits_vertical
-        vertical_coherence_length = to_quantity(
-            params.ui.vertical_coherence_length.text(),
-            field_name=params.ui.vertical_coherence_length.objectName(),
-        )
-        if vertical_coherence_length is None:
-            target_widget.setText(EMPTY_MSG)
-        elif vertical_coherence_length == 0:
-            target_widget.setText(ERROR_MSG)
-        else:
-            secondary_slits_vertical = (
-                    secondary_source_distance * wavelength / vertical_coherence_length
-            )
-            self.update_text(
-                CallbackParams(
-                    value=secondary_slits_vertical,
                     target_widgets=target_widget,
                     ui=params.ui,
                 )

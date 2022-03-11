@@ -10,7 +10,7 @@ from pint import Quantity
 from PyQt5.QtWidgets import QLineEdit
 from typing import Optional
 
-from cdicalc.models.model import (EMPTY_MSG, ERROR_MSG, Model)
+from cdicalc.models.model import EMPTY_MSG, ERROR_MSG, Model
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.snippets_quantities import (
     CallbackParams,

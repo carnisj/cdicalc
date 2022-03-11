@@ -86,18 +86,6 @@ class ApplicationWindow(QMainWindow):
             )
         )
 
-        # slots for secondary source distance
-        self.ui.secondary_source_distance.textEdited.connect(
-            partial(
-                self.model_coherence.field_changed,
-                self.ui.secondary_source_distance.objectName(),
-                self.ui,
-                {
-                    self.model_coherence.secondary_slits_opening: None,
-                },
-            )
-        )
-
     def _connect_tab_bcdi(self) -> None:
         """Connect signals to slots for the tab on BCDI calculations."""
         # slots for angular_sampling
