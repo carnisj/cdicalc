@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_main_window(object):
     def setupUi(self, main_window):
         main_window.setObjectName("main_window")
-        main_window.resize(783, 591)
+        main_window.resize(912, 836)
         main_window.setStyleSheet("background-color: rgb(204, 131, 255);")
         self.centralwidget = QtWidgets.QWidget(main_window)
         self.centralwidget.setObjectName("centralwidget")
@@ -35,10 +35,10 @@ class Ui_main_window(object):
         self.tabWidget.setObjectName("tabWidget")
         self.bcdi = QtWidgets.QWidget()
         self.bcdi.setObjectName("bcdi")
-        self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.bcdi)
-        self.verticalLayout_15.setObjectName("verticalLayout_15")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.bcdi)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -94,11 +94,11 @@ class Ui_main_window(object):
         self.detector_pixelsize.setObjectName("detector_pixelsize")
         self.verticalLayout_6.addWidget(self.detector_pixelsize)
         self.horizontalLayout_2.addLayout(self.verticalLayout_6)
-        self.verticalLayout_10.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         spacerItem3 = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.verticalLayout_10.addItem(spacerItem3)
+        self.verticalLayout_2.addItem(spacerItem3)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
@@ -142,11 +142,11 @@ class Ui_main_window(object):
         self.min_detector_distance.setObjectName("min_detector_distance")
         self.verticalLayout_9.addWidget(self.min_detector_distance)
         self.horizontalLayout_3.addLayout(self.verticalLayout_9)
-        self.verticalLayout_10.addLayout(self.horizontalLayout_3)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
         spacerItem6 = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.verticalLayout_10.addItem(spacerItem6)
+        self.verticalLayout_2.addItem(spacerItem6)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout()
@@ -189,8 +189,8 @@ class Ui_main_window(object):
         self.max_rocking_angle.setObjectName("max_rocking_angle")
         self.verticalLayout_13.addWidget(self.max_rocking_angle)
         self.horizontalLayout_4.addLayout(self.verticalLayout_13)
-        self.verticalLayout_10.addLayout(self.horizontalLayout_4)
-        self.verticalLayout_15.addLayout(self.verticalLayout_10)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+        self.gridLayout_3.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.bcdi, "")
         self.cdi = QtWidgets.QWidget()
         self.cdi.setObjectName("cdi")
@@ -319,8 +319,33 @@ class Ui_main_window(object):
         self.horizontalLayout_5.addLayout(self.verticalLayout_21)
         self.verticalLayout_27.addLayout(self.horizontalLayout_5)
         self.gridLayout_2.addLayout(self.verticalLayout_27, 0, 0, 1, 1)
+        spacerItem15 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+        self.gridLayout_2.addItem(spacerItem15, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.verticalLayout.addWidget(self.tabWidget)
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        spacerItem16 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        self.horizontalLayout_7.addItem(spacerItem16)
+        self.load_config = QtWidgets.QPushButton(self.centralwidget)
+        self.load_config.setObjectName("load_config")
+        self.horizontalLayout_7.addWidget(self.load_config)
+        spacerItem17 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        self.horizontalLayout_7.addItem(spacerItem17)
+        self.save_config = QtWidgets.QPushButton(self.centralwidget)
+        self.save_config.setObjectName("save_config")
+        self.horizontalLayout_7.addWidget(self.save_config)
+        spacerItem18 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        self.horizontalLayout_7.addItem(spacerItem18)
+        self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(main_window)
@@ -328,7 +353,9 @@ class Ui_main_window(object):
         main_window.setStatusBar(self.statusbar)
 
         self.retranslateUi(main_window)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(0)
+        self.save_config.clicked.connect(main_window.save_clicked)  # type: ignore
+        self.load_config.clicked.connect(main_window.load_clicked)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -371,3 +398,5 @@ class Ui_main_window(object):
             self.tabWidget.indexOf(self.tab),
             _translate("main_window", "Secondary source calculations"),
         )
+        self.load_config.setText(_translate("main_window", "Load config"))
+        self.save_config.setText(_translate("main_window", "Save config"))
