@@ -6,22 +6,25 @@
 """Create the GUI and connect signals to slots."""
 
 from functools import partial
-
+from pathlib import Path
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLineEdit, QMainWindow
+from PyQt5.QtWidgets import QFileDialog, QLineEdit, QMainWindow
 
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.snippets_quantities import CallbackParams
+
+DIR = str(Path(__file__).parents[1] / "resources/")
 
 
 class ApplicationWindow(QMainWindow):
     """Definition of the graphical user interface."""
 
-    def __init__(self, model_bcdi, model_coherence):
+    def __init__(self, model_bcdi, model_coherence, model_config):
         """View initializer."""
         super().__init__()
         self.model_bcdi = model_bcdi
         self.model_coherence = model_coherence
+        self.model_config = model_config
         # Set some main window's properties
         self.ui = Ui_main_window()
         self.ui.setupUi(self)
@@ -31,6 +34,32 @@ class ApplicationWindow(QMainWindow):
         self._connect_tab_bcdi()
         self._connect_tab_coherence()
         self._connect_QLineEdits()
+
+    def load_clicked(self) -> None:
+        options = QFileDialog.Options()
+        path, extension = QFileDialog.getOpenFileName(
+            parent=self,
+            caption="QFileDialog.getOpenFileName()",
+            directory=DIR,
+            filter="*.yml;; All Files (*)",
+            options=options,
+        )
+        if extension not in ["", "*.yml"]:
+            raise ValueError("File format not supported")
+        self.model_config.load_config(path=path)
+
+    def save_clicked(self) -> None:
+        options = QFileDialog.Options()
+        path, extension = QFileDialog.getSaveFileName(
+            parent=self,
+            caption="QFileDialog.getOpenFileName()",
+            directory=DIR,
+            filter="*.yml;; All Files (*)",
+            options=options,
+        )
+        if extension not in ["", "*.yml"]:
+            raise ValueError("File format not supported")
+        self.model_config.save_config(path=path, ui=self.ui)
 
     def _connect_QLineEdits(self) -> None:
         """

@@ -25,13 +25,11 @@ class Model_BCDI(Model):
     """
     Specific class gathering the methods for the calculations in the BCDI tab.
 
-    :param config:
     :param verbose: True to have more logging output.
     """
 
-    def __init__(self, config, verbose=False):
+    def __init__(self, verbose=False):
         super().__init__(verbose=verbose)
-        self._config = config
         self._d2theta: Optional[Quantity] = None
         self._dq: Optional[Quantity] = None
 

@@ -12,17 +12,15 @@ from cdicalc.utils.snippets_quantities import (
 )
 
 
-class Model_Coherence(Model):
+class ModelCoherence(Model):
     """
     Specific class gathering methods for the calculations in the secondary source tab.
 
-    :param config:
     :param verbose: True to have more logging output.
     """
 
-    def __init__(self, config, verbose=False):
+    def __init__(self, verbose=False):
         super().__init__(verbose=verbose)
-        self._config = config
 
     def update_horizontal_divergence(self, params: CallbackParams) -> None:
         """

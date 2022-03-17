@@ -12,8 +12,10 @@ import yaml
 
 from cdicalc.gui import gui
 from cdicalc.models.model_bcdi import Model_BCDI
-from cdicalc.models.model_coherence import Model_Coherence
+from cdicalc.models.model_coherence import ModelCoherence
+from cdicalc.models.model_config import ModelConfig
 from cdicalc.utils.parser import add_cli_parameters, check_args
+from cdicalc.utils.serialization import ConfigFile
 
 
 def main():
@@ -26,20 +28,20 @@ def main():
     # Create an instance of QApplication
     app = QApplication(sys.argv)
 
-    # Load configuration file
+    # Load the configuration file if provided via the command line
     config_path = cli_args.get("config")
-    if config_path is not None and os.path.isfile(config_path):
-        with open(config_path, "r") as configFile:
-            config = yaml.load(configFile, Loader=yaml.Loader)
-    else:
-        config = None
+    config_file = ConfigFile(path=config_path)
 
     # Create an instance of the models
-    model_bcdi = Model_BCDI(config=config, verbose=cli_args.get("verbose"))
-    model_coherence = Model_Coherence(config=config, verbose=cli_args.get("verbose"))
-
+    model_bcdi = Model_BCDI(verbose=cli_args.get("verbose"))
+    model_coherence = ModelCoherence(verbose=cli_args.get("verbose"))
+    model_config = ModelConfig(config_file=config_file, verbose=cli_args.get("verbose"))
     # Show the calculator's GUI
-    view = gui.ApplicationWindow(model_bcdi=model_bcdi, model_coherence=model_coherence)
+    view = gui.ApplicationWindow(
+        model_bcdi=model_bcdi,
+        model_coherence=model_coherence,
+        model_config=model_config,
+    )
     view.show()
 
     # Execute calculator's main loop
