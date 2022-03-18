@@ -5,10 +5,9 @@
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
 import argparse
+from pathlib import Path
 from PyQt5.QtWidgets import QApplication
-import os
 import sys
-import yaml
 
 from cdicalc.gui import gui
 from cdicalc.models.model_bcdi import Model_BCDI
@@ -16,6 +15,9 @@ from cdicalc.models.model_coherence import ModelCoherence
 from cdicalc.models.model_config import ModelConfig
 from cdicalc.utils.parser import add_cli_parameters, check_args
 from cdicalc.utils.serialization import ConfigFile
+
+here = Path(__file__).parent
+DEFAULT_CONFIG = str(here.parents[0] / "cdicalc/resources/config.yml")
 
 
 def main():
@@ -30,6 +32,7 @@ def main():
 
     # Load the configuration file if provided via the command line
     config_path = cli_args.get("config")
+    config_path = config_path or DEFAULT_CONFIG
     config_file = ConfigFile(path=config_path)
 
     # Create an instance of the models
