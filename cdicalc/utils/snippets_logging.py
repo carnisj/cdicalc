@@ -22,11 +22,11 @@ def configure_logging(path):
 
     # create formatter
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 
     # add formatter to handlers
     console_hdl.setFormatter(formatter)
     file_hdl.setFormatter(formatter)
 
     # configure the root logger
-    logging.basicConfig(handlers=[console_hdl, file_hdl])
+    logging.basicConfig(level=logging.DEBUG, handlers=[console_hdl, file_hdl])
