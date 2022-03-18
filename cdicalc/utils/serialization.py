@@ -44,7 +44,7 @@ class ConfigFile:
         """Dump the config to the config file."""
         if self.path is None:
             return
-        with open(self.path, "w") as file:
+        with open(self.path, mode="w", encoding="utf-8") as file:
             print(f"dumping config to {self.path}")
             yaml.dump(self.config, stream=file, Dumper=yaml.Dumper)
 
@@ -53,6 +53,6 @@ class ConfigFile:
         if self.path is None or not os.path.isfile(self.path):
             self.config = {}
         else:
-            with open(self.path, "r") as file:
+            with open(self.path, mode="r", encoding="utf-8") as file:
                 print(f"loading config from {self.path}")
                 self.config = yaml.safe_load(stream=file)
