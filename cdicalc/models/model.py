@@ -5,11 +5,13 @@
 
 """Base class of the model, containing general methods."""
 
+import logging
 from pint import Quantity
 from pint.errors import UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit, QWidget
 from typing import Callable, Dict, List, Optional, Union
 
+from cdicalc.resources.constants import EMPTY_MSG, ERROR_MSG
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.snippets_quantities import (
     CallbackParams,
@@ -18,8 +20,7 @@ from cdicalc.utils.snippets_quantities import (
     units,
 )
 
-EMPTY_MSG = ""
-ERROR_MSG = "ERROR"
+logger = logging.getLogger(__name__)
 
 
 class Model:
@@ -31,7 +32,8 @@ class Model:
 
     def __init__(self, verbose=False):
         if not isinstance(verbose, bool):
-            raise TypeError(f"verbose should be a boolean, got {type(verbose)}")
+            logger.error(f"verbose should be a boolean, got {type(verbose)}")
+            verbose = False
         self.verbose = verbose
 
     def clear_widget(self, params: CallbackParams) -> None:
@@ -59,12 +61,13 @@ class Model:
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
         if self.verbose:
-            print("\nfield changed:", field_name)
+            logger.info("\nfield changed:", field_name)
         if not isinstance(callbacks, dict):
-            raise TypeError(
+            logger.critical(
                 "callbacks should be a dict of `callback: target_widgets`"
                 f"key-value pairs, got {type(callbacks)}"
             )
+            return
 
         widget = getattr(ui, field_name)
         input_text = widget.text()
@@ -133,7 +136,8 @@ class Model:
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
         if not isinstance(callbacks, dict):
-            raise TypeError(f"callbacks should be a dictionary, got {type(callbacks)}")
+            logger.critical(f"callbacks should be a dictionary, got {type(callbacks)}")
+            return
         for _, target_widgets in callbacks.items():
             if target_widgets is not None:
                 if isinstance(target_widgets, QWidget):
@@ -150,20 +154,21 @@ class Model:
         :param params: an instance of CallbackParams
         """
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+            return
         if params.target_widgets is None:
             return
         if isinstance(params.target_widgets, QWidget):
             params.target_widgets = [params.target_widgets]
         if not isinstance(params.target_widgets, list):
-            raise TypeError(
+            logger.error(
                 "target_widgets should be a list of widgets, got "
                 f"{type(params.target_widgets)}"
             )
-
+            return
         if isinstance(params.value, units.Quantity):
             for _, widget in enumerate(params.target_widgets):
                 if isinstance(widget, QWidget) and hasattr(widget, "setText"):

@@ -6,12 +6,16 @@
 """Utilities to define default units and manipulate quantities."""
 
 from dataclasses import dataclass
+import logging
 from pint import Quantity, UnitRegistry
 from pint.errors import DimensionalityError, UndefinedUnitError
 from PyQt5.QtWidgets import QLineEdit
 from typing import List, Optional, Union
 
+from cdicalc.resources.constants import ERROR_MSG
 from cdicalc.resources.mainWindow import Ui_main_window
+
+logger = logging.getLogger(__name__)
 
 units = UnitRegistry(system="mks")
 planck_constant = units.Quantity(1, units.h).to_base_units()
@@ -66,9 +70,11 @@ def convert_unit(quantity: Optional[Quantity], default_unit: str) -> Optional[Qu
     :return: the quantity converted to the default unit
     """
     if not isinstance(quantity, units.Quantity):
-        raise TypeError(f"quantity should be a Quantity, got {type(quantity)}")
+        logger.error(f"quantity should be a Quantity, got {type(quantity)}")
+        return None
     if not isinstance(default_unit, str):
-        raise TypeError(f"default_unit should be a str, got {type(default_unit)}")
+        logger.error(f"default_unit should be a str, got {type(default_unit)}")
+        return None
     if quantity.units == units.Unit("dimensionless"):
         return units.Quantity(quantity.m, default_unit)
 
@@ -87,8 +93,11 @@ def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
     :param field_name:
     :return:
     """
+    if text == ERROR_MSG:
+        return
     try:
         value: Optional[Quantity] = units.Quantity(text)
         return convert_unit(quantity=value, default_unit=default_units[field_name][0])
     except (AttributeError, ValueError, UndefinedUnitError):
+        logger.error(f"can't convert {text, field_name} to a Quantity")
         return None

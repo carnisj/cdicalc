@@ -5,12 +5,15 @@
 
 """Model to handle loading/dumping of the config."""
 
+import logging
 from PyQt5.QtWidgets import QLineEdit
 from typing import Any
 
 from cdicalc.models.model import Model
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.serialization import ConfigFile
+
+logger = logging.getLogger(__name__)
 
 
 class ModelConfig(Model):
@@ -23,6 +26,12 @@ class ModelConfig(Model):
 
     def __init__(self, config_file: ConfigFile, verbose=False):
         super().__init__(verbose=verbose)
+        if not isinstance(config_file, ConfigFile):
+            logger.error(
+                "'config_file' should be an instance of ConfigFile, got "
+                f"{type(config_file)}"
+            )
+            config_file = ConfigFile(path=None)
         self.config_file = config_file
 
     @staticmethod

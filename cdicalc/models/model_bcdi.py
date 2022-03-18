@@ -5,12 +5,14 @@
 
 """Model to handle the calculations in the BCDI tab."""
 
+import logging
 import numpy as np
 from pint import Quantity
 from PyQt5.QtWidgets import QLineEdit
 from typing import Optional
 
-from cdicalc.models.model import EMPTY_MSG, ERROR_MSG, Model
+from cdicalc.models.model import Model
+from cdicalc.resources.constants import EMPTY_MSG, ERROR_MSG
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.snippets_quantities import (
     CallbackParams,
@@ -19,6 +21,8 @@ from cdicalc.utils.snippets_quantities import (
     speed_of_light,
     units,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Model_BCDI(Model):
@@ -40,13 +44,14 @@ class Model_BCDI(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_angular_sampling")
+            logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
-        if params.ui.rocking_angle.text() == "":
+            return
+        elif params.ui.rocking_angle.text() == "":
             return
         widget = params.ui.angular_sampling
         crystal_size = to_quantity(
@@ -86,7 +91,7 @@ class Model_BCDI(Model):
         :param ui: a pointer to the main window
         """
         if self.verbose:
-            print("  -> _update_crystal_size")
+            logger.info("  -> _update_crystal_size")
         widget = ui.crystal_size
         if self._dq is None:
             widget.setText(EMPTY_MSG)
@@ -114,13 +119,14 @@ class Model_BCDI(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_d2theta")
+            logger.info("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
-        if params.ui.detector_distance.text() == "":
+            return
+        elif params.ui.detector_distance.text() == "":
             return
         fringe_spacing = to_quantity(
             params.ui.fringe_spacing.text(),
@@ -164,7 +170,7 @@ class Model_BCDI(Model):
         :param ui: a pointer to the main window
         """
         if self.verbose:
-            print("  -> _update_dq")
+            logger.info("  -> _update_dq")
         xray_wavelength = to_quantity(
             ui.xray_wavelength.text(), field_name="xray_wavelength"
         )
@@ -183,13 +189,14 @@ class Model_BCDI(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_max_rocking_angle")
+            logger.info("  -> update_max_rocking_angle")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
-        if params.ui.rocking_angle.text() != "":
+            return
+        elif params.ui.rocking_angle.text() != "":
             params.ui.max_rocking_angle.setText(EMPTY_MSG)
             return
         widget = params.ui.max_rocking_angle
@@ -231,13 +238,14 @@ class Model_BCDI(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_min_distance")
+            logger.info("  -> update_min_distance")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
-        if params.ui.detector_distance.text() != "":
+            return
+        elif params.ui.detector_distance.text() != "":
             params.ui.min_detector_distance.setText(EMPTY_MSG)
             return
         widget = params.ui.min_detector_distance
@@ -294,27 +302,31 @@ class Model_BCDI(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_xrays")
+            logger.info("  -> update_xrays")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+            return
         if params.target_widgets is None:
-            raise ValueError(
+            logger.error(
                 "target_widgets should be a widget or a list of widgets, not None"
             )
+            return
         elif isinstance(params.target_widgets, list):
             if len(params.target_widgets) != 1:
-                raise ValueError("target_widgets should be a single widget")
+                logger.error("target_widgets should be a single widget")
+                return
             else:
                 target_widget = params.target_widgets[0]
         elif isinstance(params.target_widgets, QLineEdit):
             target_widget = params.target_widgets
         else:
-            raise TypeError(
+            logger.critical(
                 f"Invalid type for target_widgets: {type(params.target_widgets)}"
             )
+            return
 
         if params.value is None or params.value == 0:
             target_widget.setText(ERROR_MSG)

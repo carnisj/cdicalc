@@ -6,8 +6,11 @@
 """Utilities for argument parsing."""
 
 from argparse import ArgumentParser
+import logging
 import os
 from typing import Any, Dict, Tuple
+
+logger = logging.getLogger(__name__)
 
 
 def add_cli_parameters(argument_parser: ArgumentParser) -> ArgumentParser:
@@ -22,7 +25,6 @@ def add_cli_parameters(argument_parser: ArgumentParser) -> ArgumentParser:
         "--config",
         type=str,
         help="Path to the YAML configuration file",
-        default="./conf.yml",
     )
     argument_parser.add_argument(
         "-v",
@@ -43,7 +45,9 @@ def check_args(dic: Dict[str, Any]) -> Dict[str, Any]:
             dic[key] = value
             checked_keys.append(key)
         else:
-            print(f"'{key}' is an unexpected key, " "its value won't be considered.")
+            logger.info(
+                f"'{key}' is an unexpected key, " "its value won't be considered."
+            )
     return {key: dic[key] for key in checked_keys}
 
 
@@ -75,11 +79,14 @@ def valid_param(key: str, value: Any) -> Tuple[Any, bool]:
     # test the booleans first
     if key == "verbose":
         if not isinstance(value, bool):
-            raise TypeError(f"verbose should be a boolean, got {type(value)}")
+            logger.error(f"verbose should be a boolean, got {type(value)}")
+            value = False
     elif key == "config":
         if not isinstance(value, str):
-            raise TypeError(f"config should be a str, got {type(value)}")
-        if not os.path.isfile(value):
+            logger.info(f"No config provided")
+            value = None
+        if value is not None and not os.path.isfile(value):
+            logger.error(f"Could not find the config file at {value}")
             value = None
     else:
         # this key is not in the known parameters

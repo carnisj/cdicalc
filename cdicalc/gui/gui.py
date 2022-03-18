@@ -6,6 +6,8 @@
 """Create the GUI and connect signals to slots."""
 
 from functools import partial
+import logging
+import os
 from pathlib import Path
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog, QLineEdit, QMainWindow
@@ -13,7 +15,9 @@ from PyQt5.QtWidgets import QFileDialog, QLineEdit, QMainWindow
 from cdicalc.resources.mainWindow import Ui_main_window
 from cdicalc.utils.snippets_quantities import CallbackParams
 
-DIR = str(Path(__file__).parents[1] / "resources/")
+logger = logging.getLogger(__name__)
+
+RESOURCES_DIR = str(Path(__file__).parents[1] / "resources/")
 
 
 class ApplicationWindow(QMainWindow):
@@ -37,30 +41,38 @@ class ApplicationWindow(QMainWindow):
         # Update the widgets with values from the config if provided
         self.model_config.update_gui(ui=self.ui)
 
+        self.default_dir = RESOURCES_DIR
+
     def load_clicked(self) -> None:
         options = QFileDialog.Options()
-        path, extension = QFileDialog.getOpenFileName(
+        path, _ = QFileDialog.getOpenFileName(
             parent=self,
             caption="QFileDialog.getOpenFileName()",
-            directory=DIR,
+            directory=self.default_dir,
             filter="*.yml;; All Files (*)",
             options=options,
         )
-        if extension not in ["", "*.yml"]:
-            raise ValueError("File format not supported")
+        dirname, extension = os.path.splitext(path)
+        if extension not in ["", ".yml"]:
+            logger.error(f"File format '{extension}' not supported")
+            return
+        self.default_dir = dirname
         self.model_config.load_config(path=path, ui=self.ui)
 
     def save_clicked(self) -> None:
         options = QFileDialog.Options()
-        path, extension = QFileDialog.getSaveFileName(
+        path, _ = QFileDialog.getSaveFileName(
             parent=self,
             caption="QFileDialog.getOpenFileName()",
-            directory=DIR,
+            directory=self.default_dir,
             filter="*.yml;; All Files (*)",
             options=options,
         )
-        if extension not in ["", "*.yml"]:
-            raise ValueError("File format not supported")
+        dirname, extension = os.path.splitext(path)
+        if extension not in ["", ".yml"]:
+            logger.error(f"File format '{extension}' not supported")
+            return
+        self.default_dir = dirname
         self.model_config.save_config(path=path, ui=self.ui)
 
     def _connect_QLineEdits(self) -> None:

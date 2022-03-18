@@ -5,6 +5,7 @@
 #         Jerome Carnis, carnis_jerome@yahoo.fr
 
 import argparse
+
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication
 import sys
@@ -15,13 +16,17 @@ from cdicalc.models.model_coherence import ModelCoherence
 from cdicalc.models.model_config import ModelConfig
 from cdicalc.utils.parser import add_cli_parameters, check_args
 from cdicalc.utils.serialization import ConfigFile
+from cdicalc.utils.snippets_logging import configure_logging
 
 here = Path(__file__).parent
 DEFAULT_CONFIG = str(here.parents[0] / "cdicalc/resources/config.yml")
+DEFAULT_LOG = str(here.parents[0] / "cdicalc/resources/log.txt")
 
 
 def main():
     """Main function."""
+    configure_logging(path=DEFAULT_LOG)
+
     # Parse arguments from commandline
     parser = argparse.ArgumentParser()
     parser = add_cli_parameters(parser)
@@ -36,7 +41,7 @@ def main():
     config_file = ConfigFile(path=config_path)
 
     # Create an instance of the models
-    model_bcdi = Model_BCDI(verbose=cli_args.get("verbose"))
+    model_bcdi = Model_BCDI(verbose=True)# cli_args.get("verbose"))
     model_coherence = ModelCoherence(verbose=cli_args.get("verbose"))
     model_config = ModelConfig(config_file=config_file, verbose=cli_args.get("verbose"))
     # Show the calculator's GUI

@@ -5,11 +5,16 @@
 
 """Model to handle the calculations in the secondary source tab."""
 
-from cdicalc.models.model import EMPTY_MSG, ERROR_MSG, Model
+import logging
+
+from cdicalc.models.model import Model
+from cdicalc.resources.constants import EMPTY_MSG, ERROR_MSG
 from cdicalc.utils.snippets_quantities import (
     CallbackParams,
     to_quantity,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ModelCoherence(Model):
@@ -29,12 +34,13 @@ class ModelCoherence(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_angular_sampling")
+            logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+            return
         widget = params.ui.horizontal_divergence
         primary_source_distance = to_quantity(
             params.ui.primary_source_distance.text(),
@@ -70,12 +76,13 @@ class ModelCoherence(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_angular_sampling")
+            logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+            return
         widget = params.ui.vertical_divergence
         primary_source_distance = to_quantity(
             params.ui.primary_source_distance.text(),
@@ -111,12 +118,13 @@ class ModelCoherence(Model):
         :param params: an instance of CallbackParams
         """
         if self.verbose:
-            print("  -> update_d2theta")
+            logger.info("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
-            raise TypeError(
+            logger.critical(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
+            return
 
         wavelength = to_quantity(
             params.ui.xray_wavelength.text(),

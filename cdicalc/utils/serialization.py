@@ -5,10 +5,13 @@
 
 """Utility functions and classes for the serialization of the config."""
 
+import logging
 import os
 import pathlib
 from typing import Any, Optional
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 class ConfigFile:
@@ -34,9 +37,12 @@ class ConfigFile:
             return
 
         if not isinstance(value, str):
-            raise TypeError(f"'path' should be a string, got {type(value)}")
+            logger.error(f"'path' should be a string, got {type(value)}")
+            self._path = None
+            return
         elif not value.endswith(".yml"):
             value += ".yml"
+
         self._path = value
         pathlib.Path(value).parent.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +51,7 @@ class ConfigFile:
         if self.path is None:
             return
         with open(self.path, mode="w", encoding="utf-8") as file:
-            print(f"dumping config to {self.path}")
+            logger.info(f"dumping config to {self.path}")
             yaml.dump(self.config, stream=file, Dumper=yaml.Dumper)
 
     def load(self) -> None:
@@ -54,5 +60,5 @@ class ConfigFile:
             self.config = {}
         else:
             with open(self.path, mode="r", encoding="utf-8") as file:
-                print(f"loading config from {self.path}")
+                logger.info(f"loading config from {self.path}")
                 self.config = yaml.safe_load(stream=file)
