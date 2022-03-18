@@ -46,7 +46,7 @@ class ApplicationWindow(QMainWindow):
         )
         if extension not in ["", "*.yml"]:
             raise ValueError("File format not supported")
-        self.model_config.load_config(path=path)
+        self.model_config.load_config(path=path, ui=self.ui)
 
     def save_clicked(self) -> None:
         options = QFileDialog.Options()
