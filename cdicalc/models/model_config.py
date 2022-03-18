@@ -44,7 +44,7 @@ class ModelConfig(Model):
         # load the config
         self.config_file.load()
         # update the GUI with the new config
-        self._update_gui(ui=ui)
+        self.update_gui(ui=ui)
 
     def save_config(self, path: str, ui: Ui_main_window) -> None:
         """
@@ -57,7 +57,7 @@ class ModelConfig(Model):
         # dump the config to the file
         self.config_file.dump()
 
-    def _update_gui(self, ui: Ui_main_window):
+    def update_gui(self, ui: Ui_main_window):
         """Update the GUI widgets with the config values."""
         if not isinstance(self.config_file.config, dict):
             return
