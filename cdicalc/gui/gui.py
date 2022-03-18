@@ -34,6 +34,8 @@ class ApplicationWindow(QMainWindow):
         self._connect_tab_bcdi()
         self._connect_tab_coherence()
         self._connect_QLineEdits()
+        # Update the widgets with values from the config if provided
+        self.model_config.update_gui(ui=self.ui)
 
     def load_clicked(self) -> None:
         options = QFileDialog.Options()
