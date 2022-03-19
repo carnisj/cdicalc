@@ -49,7 +49,7 @@ class Model:
         :param ui: a pointer to the main window
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
-        logger.debug("\nfield changed:", field_name)
+        logger.debug(f"\nfield changed: {field_name}")
         if not isinstance(callbacks, dict):
             logger.exception(
                 "callbacks should be a dict of `callback: target_widgets`"
