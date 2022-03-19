@@ -20,7 +20,7 @@ from cdicalc.utils.snippets_logging import configure_logging
 
 here = Path(__file__).parent
 DEFAULT_CONFIG = str(here.parents[0] / "cdicalc/resources/config.yml")
-DEFAULT_LOG = str(here.parents[0] / "cdicalc/resources/log.txt")
+DEFAULT_LOG = str(here.parents[0] / "cdicalc/resources/cdicalc.log")
 VERBOSE = True
 
 

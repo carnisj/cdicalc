@@ -12,6 +12,10 @@ __pycache__/
 # C extensions
 *.so
 
+# log and config files
+*.log
+*.yml
+
 # coverage report
 *.cov*
 
