@@ -36,7 +36,7 @@ class ModelCoherence(Model):
         if self.verbose:
             logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -78,7 +78,7 @@ class ModelCoherence(Model):
         if self.verbose:
             logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -120,7 +120,7 @@ class ModelCoherence(Model):
         if self.verbose:
             logger.info("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )

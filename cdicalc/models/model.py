@@ -63,7 +63,7 @@ class Model:
         if self.verbose:
             logger.info("\nfield changed:", field_name)
         if not isinstance(callbacks, dict):
-            logger.critical(
+            logger.exception(
                 "callbacks should be a dict of `callback: target_widgets`"
                 f"key-value pairs, got {type(callbacks)}"
             )
@@ -136,7 +136,7 @@ class Model:
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
         if not isinstance(callbacks, dict):
-            logger.critical(f"callbacks should be a dictionary, got {type(callbacks)}")
+            logger.exception(f"callbacks should be a dictionary, got {type(callbacks)}")
             return
         for _, target_widgets in callbacks.items():
             if target_widgets is not None:
@@ -154,7 +154,7 @@ class Model:
         :param params: an instance of CallbackParams
         """
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )

@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QApplication
 import sys
 
 from cdicalc.gui import gui
-from cdicalc.models.model_bcdi import Model_BCDI
+from cdicalc.models.model_bcdi import ModelBCDI
 from cdicalc.models.model_coherence import ModelCoherence
 from cdicalc.models.model_config import ModelConfig
 from cdicalc.utils.parser import add_cli_parameters, check_args
@@ -41,7 +41,7 @@ def main():
     config_file = ConfigFile(path=config_path)
 
     # Create an instance of the models
-    model_bcdi = Model_BCDI(verbose=True)# cli_args.get("verbose"))
+    model_bcdi = ModelBCDI(verbose=True)# cli_args.get("verbose"))
     model_coherence = ModelCoherence(verbose=cli_args.get("verbose"))
     model_config = ModelConfig(config_file=config_file, verbose=cli_args.get("verbose"))
     # Show the calculator's GUI

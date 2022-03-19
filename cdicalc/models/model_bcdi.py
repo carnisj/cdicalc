@@ -25,7 +25,7 @@ from cdicalc.utils.snippets_quantities import (
 logger = logging.getLogger(__name__)
 
 
-class Model_BCDI(Model):
+class ModelBCDI(Model):
     """
     Specific class gathering the methods for the calculations in the BCDI tab.
 
@@ -46,7 +46,7 @@ class Model_BCDI(Model):
         if self.verbose:
             logger.info("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -121,7 +121,7 @@ class Model_BCDI(Model):
         if self.verbose:
             logger.info("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -191,7 +191,7 @@ class Model_BCDI(Model):
         if self.verbose:
             logger.info("  -> update_max_rocking_angle")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -240,7 +240,7 @@ class Model_BCDI(Model):
         if self.verbose:
             logger.info("  -> update_min_distance")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -304,7 +304,7 @@ class Model_BCDI(Model):
         if self.verbose:
             logger.info("  -> update_xrays")
         if not isinstance(params, CallbackParams):
-            logger.critical(
+            logger.exception(
                 "params should be an instance of type Callback_params, "
                 f"got {type(params)}"
             )
@@ -323,7 +323,7 @@ class Model_BCDI(Model):
         elif isinstance(params.target_widgets, QLineEdit):
             target_widget = params.target_widgets
         else:
-            logger.critical(
+            logger.exception(
                 f"Invalid type for target_widgets: {type(params.target_widgets)}"
             )
             return

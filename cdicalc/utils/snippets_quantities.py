@@ -99,5 +99,5 @@ def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
         value: Optional[Quantity] = units.Quantity(text)
         return convert_unit(quantity=value, default_unit=default_units[field_name][0])
     except (AttributeError, ValueError, UndefinedUnitError):
-        logger.error(f"can't convert {text, field_name} to a Quantity")
+        logger.info(f"can't convert {text, field_name} to a Quantity")
         return None
