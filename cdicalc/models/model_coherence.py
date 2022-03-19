@@ -20,12 +20,7 @@ logger = logging.getLogger(__name__)
 class ModelCoherence(Model):
     """
     Specific class gathering methods for the calculations in the secondary source tab.
-
-    :param verbose: True to have more logging output.
     """
-
-    def __init__(self, verbose=False):
-        super().__init__(verbose=verbose)
 
     def update_horizontal_divergence(self, params: CallbackParams) -> None:
         """
@@ -33,8 +28,7 @@ class ModelCoherence(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_angular_sampling")
+        logger.debug("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -75,8 +69,7 @@ class ModelCoherence(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_angular_sampling")
+        logger.debug("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -117,8 +110,7 @@ class ModelCoherence(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_d2theta")
+        logger.debug("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "

@@ -8,7 +8,7 @@
 import logging
 
 
-def configure_logging(path):
+def configure_logging(path: str, verbose: bool = False):
     """Create handlers and configure logging."""
     if not isinstance(path, str):
         raise TypeError(f"'path' should be a string, got {type(path)}")
@@ -17,7 +17,10 @@ def configure_logging(path):
     file_hdl = logging.FileHandler(path, mode='w', encoding="utf-8")
 
     # set levels
-    console_hdl.setLevel(logging.ERROR)
+    if verbose:
+        console_hdl.setLevel(logging.DEBUG)
+    else:
+        console_hdl.setLevel(logging.ERROR)
     file_hdl.setLevel(logging.DEBUG)
 
     # create formatter

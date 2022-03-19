@@ -21,11 +21,10 @@ class ModelConfig(Model):
     Specific class gathering the methods for updating the config.
 
     :param config_file: an instance of ConfigFile
-    :param verbose: True to have more logging output.
     """
 
-    def __init__(self, config_file: ConfigFile, verbose=False):
-        super().__init__(verbose=verbose)
+    def __init__(self, config_file: ConfigFile):
+        super().__init__()
         if not isinstance(config_file, ConfigFile):
             logger.error(
                 "'config_file' should be an instance of ConfigFile, got "

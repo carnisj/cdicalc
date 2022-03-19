@@ -26,14 +26,10 @@ logger = logging.getLogger(__name__)
 
 
 class ModelBCDI(Model):
-    """
-    Specific class gathering the methods for the calculations in the BCDI tab.
+    """Specific class gathering the methods for the calculations in the BCDI tab."""
 
-    :param verbose: True to have more logging output.
-    """
-
-    def __init__(self, verbose=False):
-        super().__init__(verbose=verbose)
+    def __init__(self):
+        super().__init__()
         self._d2theta: Optional[Quantity] = None
         self._dq: Optional[Quantity] = None
 
@@ -43,8 +39,7 @@ class ModelBCDI(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_angular_sampling")
+        logger.debug("  -> update_angular_sampling")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -90,8 +85,7 @@ class ModelBCDI(Model):
 
         :param ui: a pointer to the main window
         """
-        if self.verbose:
-            logger.info("  -> _update_crystal_size")
+        logger.debug("  -> _update_crystal_size")
         widget = ui.crystal_size
         if self._dq is None:
             widget.setText(EMPTY_MSG)
@@ -118,8 +112,7 @@ class ModelBCDI(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_d2theta")
+        logger.debug("  -> update_d2theta")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -169,8 +162,7 @@ class ModelBCDI(Model):
 
         :param ui: a pointer to the main window
         """
-        if self.verbose:
-            logger.info("  -> _update_dq")
+        logger.debug("  -> _update_dq")
         xray_wavelength = to_quantity(
             ui.xray_wavelength.text(), field_name="xray_wavelength"
         )
@@ -188,8 +180,7 @@ class ModelBCDI(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_max_rocking_angle")
+        logger.debug("  -> update_max_rocking_angle")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -237,8 +228,7 @@ class ModelBCDI(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_min_distance")
+        logger.debug("  -> update_min_distance")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "
@@ -301,8 +291,7 @@ class ModelBCDI(Model):
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            logger.info("  -> update_xrays")
+        logger.debug("  -> update_xrays")
         if not isinstance(params, CallbackParams):
             logger.exception(
                 "params should be an instance of type Callback_params, "

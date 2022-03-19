@@ -6,11 +6,8 @@
 """Utilities for argument parsing."""
 
 from argparse import ArgumentParser
-import logging
 import os
 from typing import Any, Dict, Tuple
-
-logger = logging.getLogger(__name__)
 
 
 def add_cli_parameters(argument_parser: ArgumentParser) -> ArgumentParser:
@@ -31,7 +28,6 @@ def add_cli_parameters(argument_parser: ArgumentParser) -> ArgumentParser:
         "--verbose",
         type=str,
         help="True for more logging output",
-        default="False",
     )
     return argument_parser
 
@@ -45,7 +41,7 @@ def check_args(dic: Dict[str, Any]) -> Dict[str, Any]:
             dic[key] = value
             checked_keys.append(key)
         else:
-            logger.info(
+            print(
                 f"'{key}' is an unexpected key, " "its value won't be considered."
             )
     return {key: dic[key] for key in checked_keys}
@@ -79,14 +75,14 @@ def valid_param(key: str, value: Any) -> Tuple[Any, bool]:
     # test the booleans first
     if key == "verbose":
         if not isinstance(value, bool):
-            logger.error(f"verbose should be a boolean, got {type(value)}")
-            value = False
+            print(f"verbose should be a boolean, got {type(value)}")
+            value = None
     elif key == "config":
         if not isinstance(value, str):
-            logger.info(f"No config provided")
+            print(f"No config provided")
             value = None
         if value is not None and not os.path.isfile(value):
-            logger.error(f"Could not find the config file at {value}")
+            print(f"Could not find the config file at {value}")
             value = None
     else:
         # this key is not in the known parameters

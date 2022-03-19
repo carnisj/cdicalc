@@ -24,17 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class Model:
-    """
-    Base class gathering common methods for interacting with widgets.
-
-    :param verbose: True to have more logging output.
-    """
-
-    def __init__(self, verbose=False):
-        if not isinstance(verbose, bool):
-            logger.error(f"verbose should be a boolean, got {type(verbose)}")
-            verbose = False
-        self.verbose = verbose
+    """Base class gathering common methods for interacting with widgets."""
 
     def clear_widget(self, params: CallbackParams) -> None:
         """
@@ -42,8 +32,7 @@ class Model:
 
         :param params: an instance of CallbackParams
         """
-        if self.verbose:
-            print("  -> clear_widget")
+        logger.debug("  -> clear_widget")
         params.value = None
         self.update_text(params)
 
@@ -60,8 +49,7 @@ class Model:
         :param ui: a pointer to the main window
         :param callbacks: a dictionary of (Callable, target widgets) key-value pairs
         """
-        if self.verbose:
-            logger.info("\nfield changed:", field_name)
+        logger.debug("\nfield changed:", field_name)
         if not isinstance(callbacks, dict):
             logger.exception(
                 "callbacks should be a dict of `callback: target_widgets`"

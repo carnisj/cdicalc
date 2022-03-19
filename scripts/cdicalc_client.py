@@ -21,11 +21,11 @@ from cdicalc.utils.snippets_logging import configure_logging
 here = Path(__file__).parent
 DEFAULT_CONFIG = str(here.parents[0] / "cdicalc/resources/config.yml")
 DEFAULT_LOG = str(here.parents[0] / "cdicalc/resources/log.txt")
+VERBOSE = True
 
 
 def main():
     """Main function."""
-    configure_logging(path=DEFAULT_LOG)
 
     # Parse arguments from commandline
     parser = argparse.ArgumentParser()
@@ -36,14 +36,17 @@ def main():
     app = QApplication(sys.argv)
 
     # Load the configuration file if provided via the command line
-    config_path = cli_args.get("config")
-    config_path = config_path or DEFAULT_CONFIG
+    config_path = cli_args.get("config") or DEFAULT_CONFIG
+    verbose = cli_args.get("verbose") or VERBOSE
     config_file = ConfigFile(path=config_path)
 
+    # configure handlers for logging
+    configure_logging(path=DEFAULT_LOG, verbose=verbose)
+
     # Create an instance of the models
-    model_bcdi = ModelBCDI(verbose=True)# cli_args.get("verbose"))
-    model_coherence = ModelCoherence(verbose=cli_args.get("verbose"))
-    model_config = ModelConfig(config_file=config_file, verbose=cli_args.get("verbose"))
+    model_bcdi = ModelBCDI()
+    model_coherence = ModelCoherence()
+    model_config = ModelConfig(config_file=config_file)
     # Show the calculator's GUI
     view = gui.ApplicationWindow(
         model_bcdi=model_bcdi,
