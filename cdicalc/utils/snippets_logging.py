@@ -14,7 +14,7 @@ def configure_logging(path: str, verbose: bool = False):
         raise TypeError(f"'path' should be a string, got {type(path)}")
     # create console and file handlers
     console_hdl = logging.StreamHandler()
-    file_hdl = logging.FileHandler(path, mode='w', encoding="utf-8")
+    file_hdl = logging.FileHandler(path, mode="w", encoding="utf-8")
 
     # set levels
     if verbose:
@@ -25,7 +25,8 @@ def configure_logging(path: str, verbose: bool = False):
 
     # create formatter
     formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+        "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+    )
 
     # add formatter to handlers
     console_hdl.setFormatter(formatter)

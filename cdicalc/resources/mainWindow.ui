@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>912</width>
-    <height>836</height>
+    <width>638</width>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -671,6 +671,30 @@ color: rgb(255, 255, 255);</string>
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="exit">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 0, 0);
+font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
+          </property>
+          <property name="text">
+           <string>EXIT</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_16">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QPushButton" name="save_config">
           <property name="text">
            <string>Save config</string>
@@ -725,6 +749,22 @@ color: rgb(255, 255, 255);</string>
     <hint type="sourcelabel">
      <x>295</x>
      <y>799</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>455</x>
+     <y>417</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exit</sender>
+   <signal>clicked()</signal>
+   <receiver>main_window</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>456</x>
+     <y>792</y>
     </hint>
     <hint type="destinationlabel">
      <x>455</x>

@@ -20,6 +20,7 @@ class ConfigFile:
 
     :param path: full path the config file.
     """
+
     def __init__(self, path: Optional[str]) -> None:
         self.config: Any = None
         self.path = path

@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_main_window(object):
     def setupUi(self, main_window):
         main_window.setObjectName("main_window")
-        main_window.resize(912, 836)
+        main_window.resize(638, 561)
         main_window.setStyleSheet("background-color: rgb(204, 131, 255);")
         self.centralwidget = QtWidgets.QWidget(main_window)
         self.centralwidget.setObjectName("centralwidget")
@@ -338,13 +338,23 @@ class Ui_main_window(object):
             40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         self.horizontalLayout_7.addItem(spacerItem17)
-        self.save_config = QtWidgets.QPushButton(self.centralwidget)
-        self.save_config.setObjectName("save_config")
-        self.horizontalLayout_7.addWidget(self.save_config)
+        self.exit = QtWidgets.QPushButton(self.centralwidget)
+        self.exit.setStyleSheet(
+            "background-color: rgb(255, 0, 0);\n" 'font: 75 10pt "MS Shell Dlg 2";'
+        )
+        self.exit.setObjectName("exit")
+        self.horizontalLayout_7.addWidget(self.exit)
         spacerItem18 = QtWidgets.QSpacerItem(
             40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         self.horizontalLayout_7.addItem(spacerItem18)
+        self.save_config = QtWidgets.QPushButton(self.centralwidget)
+        self.save_config.setObjectName("save_config")
+        self.horizontalLayout_7.addWidget(self.save_config)
+        spacerItem19 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        self.horizontalLayout_7.addItem(spacerItem19)
         self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
@@ -356,6 +366,7 @@ class Ui_main_window(object):
         self.tabWidget.setCurrentIndex(0)
         self.save_config.clicked.connect(main_window.save_clicked)  # type: ignore
         self.load_config.clicked.connect(main_window.load_clicked)  # type: ignore
+        self.exit.clicked.connect(main_window.close)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -399,4 +410,5 @@ class Ui_main_window(object):
             _translate("main_window", "Secondary source calculations"),
         )
         self.load_config.setText(_translate("main_window", "Load config"))
+        self.exit.setText(_translate("main_window", "EXIT"))
         self.save_config.setText(_translate("main_window", "Save config"))

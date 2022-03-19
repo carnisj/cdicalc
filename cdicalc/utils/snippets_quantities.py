@@ -94,7 +94,7 @@ def to_quantity(text: str, field_name: str = "unknown") -> Optional[Quantity]:
     :return:
     """
     if text == ERROR_MSG:
-        return
+        return None
     try:
         value: Optional[Quantity] = units.Quantity(text)
         return convert_unit(quantity=value, default_unit=default_units[field_name][0])

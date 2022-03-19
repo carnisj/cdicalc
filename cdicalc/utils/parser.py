@@ -41,9 +41,7 @@ def check_args(dic: Dict[str, Any]) -> Dict[str, Any]:
             dic[key] = value
             checked_keys.append(key)
         else:
-            print(
-                f"'{key}' is an unexpected key, " "its value won't be considered."
-            )
+            print(f"'{key}' is an unexpected key, " "its value won't be considered.")
     return {key: dic[key] for key in checked_keys}
 
 
@@ -74,7 +72,7 @@ def valid_param(key: str, value: Any) -> Tuple[Any, bool]:
 
     # test the booleans first
     if key == "verbose":
-        if not isinstance(value, bool):
+        if value is not None and not isinstance(value, bool):
             print(f"verbose should be a boolean, got {type(value)}")
             value = None
     elif key == "config":
