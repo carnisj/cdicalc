@@ -12,6 +12,7 @@ import sys
 
 from cdicalc.gui import gui
 from cdicalc.models.model_bcdi import ModelBCDI
+from cdicalc.models.model_cdi import ModelCDI
 from cdicalc.models.model_coherence import ModelCoherence
 from cdicalc.models.model_config import ModelConfig
 from cdicalc.utils.parser import add_cli_parameters, check_args
@@ -45,11 +46,13 @@ def main():
 
     # Create an instance of the models
     model_bcdi = ModelBCDI()
+    model_cdi = ModelCDI()
     model_coherence = ModelCoherence()
     model_config = ModelConfig(config_file=config_file)
     # Show the calculator's GUI
     view = gui.ApplicationWindow(
         model_bcdi=model_bcdi,
+        model_cdi=model_cdi,
         model_coherence=model_coherence,
         model_config=model_config,
     )

@@ -23,10 +23,11 @@ RESOURCES_DIR = str(Path(__file__).parents[1] / "resources/")
 class ApplicationWindow(QMainWindow):
     """Definition of the graphical user interface."""
 
-    def __init__(self, model_bcdi, model_coherence, model_config):
+    def __init__(self, model_bcdi, model_cdi, model_coherence, model_config):
         """View initializer."""
         super().__init__()
         self.model_bcdi = model_bcdi
+        self.model_cdi = model_cdi
         self.model_coherence = model_coherence
         self.model_config = model_config
         # Set some main window's properties
@@ -36,6 +37,7 @@ class ApplicationWindow(QMainWindow):
         self.setWindowIcon(QIcon(":/icons/diffract.png"))
         # Connect signals and slots
         self._connect_tab_bcdi()
+        self._connect_tab_cdi()
         self._connect_tab_coherence()
         self._connect_QLineEdits()
         # Update the widgets with values from the config if provided
@@ -89,6 +91,20 @@ class ApplicationWindow(QMainWindow):
                 widget.editingFinished.connect(
                     partial(self.model_bcdi.format_field, widget)
                 )
+
+    def _connect_tab_cdi(self) -> None:
+        """Connect signals to slots for the tab on CDI calculations."""
+        # slots for primary_source_distance
+        self.ui.beam_size.textEdited.connect(
+            partial(
+                self.model_cdi.field_changed,
+                self.ui.beam_size.objectName(),
+                self.ui,
+                {
+                    self.model_cdi.update_speckle_size: None,
+                },
+            )
+        )
 
     def _connect_tab_coherence(self) -> None:
         """Connect signals to slots for the tab on secondary source calculations."""
@@ -261,6 +277,12 @@ class ApplicationWindow(QMainWindow):
         self.ui.xray_wavelength.textChanged.connect(
             partial(
                 self.model_coherence.update_transverse_coherence,
+                CallbackParams(self.ui),
+            )
+        )
+        self.ui.xray_wavelength.textChanged.connect(
+            partial(
+                self.model_cdi.update_speckle_size,
                 CallbackParams(self.ui),
             )
         )
