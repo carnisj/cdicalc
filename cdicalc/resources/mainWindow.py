@@ -24,9 +24,8 @@ class Ui_main_window(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.helptext = QtWidgets.QLineEdit(self.centralwidget)
         self.helptext.setEnabled(True)
-        self.helptext.setStyleSheet(
-            "background-color: rgb(51, 51, 51);\n" "color: rgb(255, 255, 255);"
-        )
+        self.helptext.setStyleSheet("background-color: rgb(51, 51, 51);\n"
+"color: rgb(255, 255, 255);")
         self.helptext.setReadOnly(True)
         self.helptext.setObjectName("helptext")
         self.verticalLayout.addWidget(self.helptext)
@@ -52,9 +51,7 @@ class Ui_main_window(object):
         self.xray_energy.setObjectName("xray_energy")
         self.verticalLayout_3.addWidget(self.xray_energy)
         self.horizontalLayout_2.addLayout(self.verticalLayout_3)
-        spacerItem = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -66,9 +63,7 @@ class Ui_main_window(object):
         self.xray_wavelength.setObjectName("xray_wavelength")
         self.verticalLayout_4.addWidget(self.xray_wavelength)
         self.horizontalLayout_2.addLayout(self.verticalLayout_4)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -80,9 +75,7 @@ class Ui_main_window(object):
         self.detector_distance.setObjectName("detector_distance")
         self.verticalLayout_5.addWidget(self.detector_distance)
         self.horizontalLayout_2.addLayout(self.verticalLayout_5)
-        spacerItem2 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -95,9 +88,7 @@ class Ui_main_window(object):
         self.verticalLayout_6.addWidget(self.detector_pixelsize)
         self.horizontalLayout_2.addLayout(self.verticalLayout_6)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        spacerItem3 = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem3)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -111,9 +102,7 @@ class Ui_main_window(object):
         self.fringe_spacing.setObjectName("fringe_spacing")
         self.verticalLayout_7.addWidget(self.fringe_spacing)
         self.horizontalLayout_3.addLayout(self.verticalLayout_7)
-        spacerItem4 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem4)
         self.verticalLayout_8 = QtWidgets.QVBoxLayout()
         self.verticalLayout_8.setObjectName("verticalLayout_8")
@@ -125,9 +114,7 @@ class Ui_main_window(object):
         self.crystal_size.setObjectName("crystal_size")
         self.verticalLayout_8.addWidget(self.crystal_size)
         self.horizontalLayout_3.addLayout(self.verticalLayout_8)
-        spacerItem5 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem5)
         self.verticalLayout_9 = QtWidgets.QVBoxLayout()
         self.verticalLayout_9.setObjectName("verticalLayout_9")
@@ -135,17 +122,13 @@ class Ui_main_window(object):
         self.label_6.setObjectName("label_6")
         self.verticalLayout_9.addWidget(self.label_6)
         self.min_detector_distance = QtWidgets.QLineEdit(self.bcdi)
-        self.min_detector_distance.setStyleSheet(
-            "background-color: rgb(230, 230, 230);"
-        )
+        self.min_detector_distance.setStyleSheet("background-color: rgb(230, 230, 230);")
         self.min_detector_distance.setReadOnly(True)
         self.min_detector_distance.setObjectName("min_detector_distance")
         self.verticalLayout_9.addWidget(self.min_detector_distance)
         self.horizontalLayout_3.addLayout(self.verticalLayout_9)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        spacerItem6 = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem6)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
@@ -159,9 +142,7 @@ class Ui_main_window(object):
         self.rocking_angle.setObjectName("rocking_angle")
         self.verticalLayout_11.addWidget(self.rocking_angle)
         self.horizontalLayout_4.addLayout(self.verticalLayout_11)
-        spacerItem7 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem7)
         self.verticalLayout_12 = QtWidgets.QVBoxLayout()
         self.verticalLayout_12.setObjectName("verticalLayout_12")
@@ -173,9 +154,7 @@ class Ui_main_window(object):
         self.angular_sampling.setObjectName("angular_sampling")
         self.verticalLayout_12.addWidget(self.angular_sampling)
         self.horizontalLayout_4.addLayout(self.verticalLayout_12)
-        spacerItem8 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem8)
         self.verticalLayout_13 = QtWidgets.QVBoxLayout()
         self.verticalLayout_13.setObjectName("verticalLayout_13")
@@ -194,6 +173,37 @@ class Ui_main_window(object):
         self.tabWidget.addTab(self.bcdi, "")
         self.cdi = QtWidgets.QWidget()
         self.cdi.setObjectName("cdi")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.cdi)
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.verticalLayout_23 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_23.setObjectName("verticalLayout_23")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.verticalLayout_15 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_15.setObjectName("verticalLayout_15")
+        self.label_9 = QtWidgets.QLabel(self.cdi)
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout_15.addWidget(self.label_9)
+        self.beam_size = QtWidgets.QLineEdit(self.cdi)
+        self.beam_size.setObjectName("beam_size")
+        self.verticalLayout_15.addWidget(self.beam_size)
+        self.horizontalLayout_8.addLayout(self.verticalLayout_15)
+        spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem9)
+        self.verticalLayout_22 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_22.setObjectName("verticalLayout_22")
+        self.label_17 = QtWidgets.QLabel(self.cdi)
+        self.label_17.setObjectName("label_17")
+        self.verticalLayout_22.addWidget(self.label_17)
+        self.speckle_size = QtWidgets.QLineEdit(self.cdi)
+        self.speckle_size.setReadOnly(True)
+        self.speckle_size.setObjectName("speckle_size")
+        self.verticalLayout_22.addWidget(self.speckle_size)
+        self.horizontalLayout_8.addLayout(self.verticalLayout_22)
+        self.verticalLayout_23.addLayout(self.horizontalLayout_8)
+        spacerItem10 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_23.addItem(spacerItem10)
+        self.gridLayout_4.addLayout(self.verticalLayout_23, 0, 0, 1, 1)
         self.tabWidget.addTab(self.cdi, "")
         self.diffraction = QtWidgets.QWidget()
         self.diffraction.setObjectName("diffraction")
@@ -212,32 +222,24 @@ class Ui_main_window(object):
         self.label_10.setObjectName("label_10")
         self.verticalLayout_14.addWidget(self.label_10)
         self.primary_source_distance = QtWidgets.QLineEdit(self.tab)
-        self.primary_source_distance.setStyleSheet(
-            "background-color: rgb(255, 255, 255);"
-        )
+        self.primary_source_distance.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.primary_source_distance.setObjectName("primary_source_distance")
         self.verticalLayout_14.addWidget(self.primary_source_distance)
         self.horizontalLayout.addLayout(self.verticalLayout_14)
-        spacerItem9 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout.addItem(spacerItem9)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem11)
         self.verticalLayout_16 = QtWidgets.QVBoxLayout()
         self.verticalLayout_16.setObjectName("verticalLayout_16")
         self.label_11 = QtWidgets.QLabel(self.tab)
         self.label_11.setObjectName("label_11")
         self.verticalLayout_16.addWidget(self.label_11)
         self.horizontal_source_size = QtWidgets.QLineEdit(self.tab)
-        self.horizontal_source_size.setStyleSheet(
-            "background-color: rgb(255, 255, 255);"
-        )
+        self.horizontal_source_size.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.horizontal_source_size.setObjectName("horizontal_source_size")
         self.verticalLayout_16.addWidget(self.horizontal_source_size)
         self.horizontalLayout.addLayout(self.verticalLayout_16)
-        spacerItem10 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout.addItem(spacerItem10)
+        spacerItem12 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem12)
         self.verticalLayout_17 = QtWidgets.QVBoxLayout()
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.label_12 = QtWidgets.QLabel(self.tab)
@@ -249,10 +251,8 @@ class Ui_main_window(object):
         self.verticalLayout_17.addWidget(self.vertical_source_size)
         self.horizontalLayout.addLayout(self.verticalLayout_17)
         self.verticalLayout_27.addLayout(self.horizontalLayout)
-        spacerItem11 = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.verticalLayout_27.addItem(spacerItem11)
+        spacerItem13 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_27.addItem(spacerItem13)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_18 = QtWidgets.QVBoxLayout()
@@ -261,17 +261,13 @@ class Ui_main_window(object):
         self.label_13.setObjectName("label_13")
         self.verticalLayout_18.addWidget(self.label_13)
         self.horizontal_divergence = QtWidgets.QLineEdit(self.tab)
-        self.horizontal_divergence.setStyleSheet(
-            "background-color: rgb(230, 230, 230);"
-        )
+        self.horizontal_divergence.setStyleSheet("background-color: rgb(230, 230, 230);")
         self.horizontal_divergence.setReadOnly(True)
         self.horizontal_divergence.setObjectName("horizontal_divergence")
         self.verticalLayout_18.addWidget(self.horizontal_divergence)
         self.horizontalLayout_5.addLayout(self.verticalLayout_18)
-        spacerItem12 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_5.addItem(spacerItem12)
+        spacerItem14 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem14)
         self.verticalLayout_19 = QtWidgets.QVBoxLayout()
         self.verticalLayout_19.setObjectName("verticalLayout_19")
         self.label_14 = QtWidgets.QLabel(self.tab)
@@ -283,78 +279,59 @@ class Ui_main_window(object):
         self.vertical_divergence.setObjectName("vertical_divergence")
         self.verticalLayout_19.addWidget(self.vertical_divergence)
         self.horizontalLayout_5.addLayout(self.verticalLayout_19)
-        spacerItem13 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_5.addItem(spacerItem13)
+        spacerItem15 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem15)
         self.verticalLayout_20 = QtWidgets.QVBoxLayout()
         self.verticalLayout_20.setObjectName("verticalLayout_20")
         self.label_15 = QtWidgets.QLabel(self.tab)
         self.label_15.setObjectName("label_15")
         self.verticalLayout_20.addWidget(self.label_15)
         self.horizontal_coherence_length = QtWidgets.QLineEdit(self.tab)
-        self.horizontal_coherence_length.setStyleSheet(
-            "background-color: rgb(230, 230, 230);"
-        )
+        self.horizontal_coherence_length.setStyleSheet("background-color: rgb(230, 230, 230);")
         self.horizontal_coherence_length.setReadOnly(True)
         self.horizontal_coherence_length.setObjectName("horizontal_coherence_length")
         self.verticalLayout_20.addWidget(self.horizontal_coherence_length)
         self.horizontalLayout_5.addLayout(self.verticalLayout_20)
-        spacerItem14 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_5.addItem(spacerItem14)
+        spacerItem16 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem16)
         self.verticalLayout_21 = QtWidgets.QVBoxLayout()
         self.verticalLayout_21.setObjectName("verticalLayout_21")
         self.label_16 = QtWidgets.QLabel(self.tab)
         self.label_16.setObjectName("label_16")
         self.verticalLayout_21.addWidget(self.label_16)
         self.vertical_coherence_length = QtWidgets.QLineEdit(self.tab)
-        self.vertical_coherence_length.setStyleSheet(
-            "background-color: rgb(230, 230, 230);"
-        )
+        self.vertical_coherence_length.setStyleSheet("background-color: rgb(230, 230, 230);")
         self.vertical_coherence_length.setReadOnly(True)
         self.vertical_coherence_length.setObjectName("vertical_coherence_length")
         self.verticalLayout_21.addWidget(self.vertical_coherence_length)
         self.horizontalLayout_5.addLayout(self.verticalLayout_21)
         self.verticalLayout_27.addLayout(self.horizontalLayout_5)
         self.gridLayout_2.addLayout(self.verticalLayout_27, 0, 0, 1, 1)
-        spacerItem15 = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.gridLayout_2.addItem(spacerItem15, 1, 0, 1, 1)
+        spacerItem17 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_2.addItem(spacerItem17, 1, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        spacerItem16 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_7.addItem(spacerItem16)
+        spacerItem18 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem18)
         self.load_config = QtWidgets.QPushButton(self.centralwidget)
         self.load_config.setObjectName("load_config")
         self.horizontalLayout_7.addWidget(self.load_config)
-        spacerItem17 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_7.addItem(spacerItem17)
+        spacerItem19 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem19)
         self.exit = QtWidgets.QPushButton(self.centralwidget)
-        self.exit.setStyleSheet(
-            "background-color: rgb(255, 0, 0);\n" 'font: 75 10pt "MS Shell Dlg 2";'
-        )
+        self.exit.setStyleSheet("background-color: rgb(255, 0, 0);\n"
+"font: 75 10pt \"MS Shell Dlg 2\";")
         self.exit.setObjectName("exit")
         self.horizontalLayout_7.addWidget(self.exit)
-        spacerItem18 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_7.addItem(spacerItem18)
+        spacerItem20 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem20)
         self.save_config = QtWidgets.QPushButton(self.centralwidget)
         self.save_config.setObjectName("save_config")
         self.horizontalLayout_7.addWidget(self.save_config)
-        spacerItem19 = QtWidgets.QSpacerItem(
-            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
-        self.horizontalLayout_7.addItem(spacerItem19)
+        spacerItem21 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem21)
         self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         main_window.setCentralWidget(self.centralwidget)
@@ -363,10 +340,10 @@ class Ui_main_window(object):
         main_window.setStatusBar(self.statusbar)
 
         self.retranslateUi(main_window)
-        self.tabWidget.setCurrentIndex(0)
-        self.save_config.clicked.connect(main_window.save_clicked)  # type: ignore
-        self.load_config.clicked.connect(main_window.load_clicked)  # type: ignore
-        self.exit.clicked.connect(main_window.close)  # type: ignore
+        self.tabWidget.setCurrentIndex(1)
+        self.save_config.clicked.connect(main_window.save_clicked) # type: ignore
+        self.load_config.clicked.connect(main_window.load_clicked) # type: ignore
+        self.exit.clicked.connect(main_window.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -376,39 +353,26 @@ class Ui_main_window(object):
         self.label_wavelength.setText(_translate("main_window", "Wavelength (A)"))
         self.label.setText(_translate("main_window", "Detector distance (m)"))
         self.label_2.setText(_translate("main_window", "Detector pixel size (um)"))
-        self.label_4.setText(
-            _translate("main_window", "Fringe spacing (pixel)\n" "/ sampling")
-        )
+        self.label_4.setText(_translate("main_window", "Fringe spacing (pixel)\n"
+"/ sampling"))
         self.label_5.setText(_translate("main_window", "Crystal size (nm)"))
         self.label_6.setText(_translate("main_window", "Min detector distance (m)"))
         self.label_7.setText(_translate("main_window", "Rocking angle (deg)"))
         self.label_3.setText(_translate("main_window", "Angular sampling"))
         self.label_8.setText(_translate("main_window", "Max rocking angle (deg)"))
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.bcdi),
-            _translate("main_window", "BCDI calculations"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.cdi),
-            _translate("main_window", "CDI calculations"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.diffraction),
-            _translate("main_window", "Diffraction calculations"),
-        )
-        self.label_10.setText(
-            _translate("main_window", "Distance sample to source (m)")
-        )
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.bcdi), _translate("main_window", "BCDI calculations"))
+        self.label_9.setText(_translate("main_window", "Beam size (um)"))
+        self.label_17.setText(_translate("main_window", "Speckle size (um)"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.cdi), _translate("main_window", "CDI calculations"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.diffraction), _translate("main_window", "Diffraction calculations"))
+        self.label_10.setText(_translate("main_window", "Distance sample to source (m)"))
         self.label_11.setText(_translate("main_window", "Horizontal source size (um)"))
         self.label_12.setText(_translate("main_window", "Vertical source size (um)"))
         self.label_13.setText(_translate("main_window", "Horizontal divergence"))
         self.label_14.setText(_translate("main_window", "Vertical divergence"))
         self.label_15.setText(_translate("main_window", "Horizontal coherence length"))
         self.label_16.setText(_translate("main_window", "Vertical coherence length"))
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.tab),
-            _translate("main_window", "Secondary source calculations"),
-        )
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("main_window", "Secondary source calculations"))
         self.load_config.setText(_translate("main_window", "Load config"))
         self.exit.setText(_translate("main_window", "EXIT"))
         self.save_config.setText(_translate("main_window", "Save config"))
