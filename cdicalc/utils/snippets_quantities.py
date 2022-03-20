@@ -23,6 +23,7 @@ speed_of_light = units.Quantity(1, units.speed_of_light).to_base_units()
 
 default_units = {
     "angular_sampling": ("", "~.1f", "3"),
+    "beam_size": ("um", "~.1f", "1 um"),
     "crystal_size": ("nm", "~.0f", "250 nm"),
     "detector_distance": ("m", "~.2f", "1.5 m"),
     "detector_pixelsize": ("um", "~.0f", "55 um"),
@@ -40,6 +41,7 @@ default_units = {
     "secondary_slits_horizontal": ("um", "~.0f", "20 um"),
     "secondary_slits_vertical": ("um", "~.0f", "20 um"),
     "secondary_source_distance": ("m", "~.2f", "1.5 m"),
+    "speckle_size": ("um", "~.0f", "50 um"),
     "unknown": ("", "~.2f", "unknown"),
     "vertical_coherence_length": ("um", "~.1f", "100 um"),
     "vertical_divergence": ("urad", "~.2f", "0.5 urad"),
