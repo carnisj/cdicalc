@@ -18,7 +18,7 @@ from cdicalc.resources.mainWindow import Ui_main_window
 logger = logging.getLogger(__name__)
 
 units = UnitRegistry(system="mks")
-planck_constant = units.Quantity(1, units.h).to_base_units()
+planck_constant = units.Quantity(1, units.planck_constant).to_base_units()
 speed_of_light = units.Quantity(1, units.speed_of_light).to_base_units()
 
 default_units = {
